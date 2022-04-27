@@ -16,4 +16,5 @@ steps:
    - 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA'
    - '--region'
    - 'europe-central2'
- images:
+images:
+ - 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA'
