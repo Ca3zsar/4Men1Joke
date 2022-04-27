@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React TE ROG IO FRUMOS
+          Learn React TE ROG IO FRUMOS AAAAAAAAAAA
         </a>
       </header>
     </div>
