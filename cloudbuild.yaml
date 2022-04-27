@@ -1,10 +1,10 @@
 steps:
  # Build the container image
  - name: 'gcr.io/cloud-builders/docker'
-   args: ['build', '-t', 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA', '.']
+   args: ['build', '-t', 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA', 'front/']
  # Push the container image to Container Registry
  - name: 'gcr.io/cloud-builders/docker'
-   args: ['push', 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA']
+   args: ['push', 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA', 'front/']
  # Deploy container image to Cloud Run
  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
    entrypoint: gcloud
