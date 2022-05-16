@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const AUTH_API = 'https://api-dot-tema-3-cc-345018.lm.r.appspot.com/twitter/';
+const AUTH_API = 'https://man1joke.lm.r.appspot.com/';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable({
@@ -17,16 +16,16 @@ export class AuthService {
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(AUTH_API + 'login', {
-      username,
-      password
+      "username":username,
+      "password":password,
     }, httpOptions);
   }
 
   register(username: string, email: string, password: string): Observable<any> {
     return this.http.post(AUTH_API + 'register', {
-      username,
-      email,
-      password
+      "username":username,
+      "email":email,
+      "password":password
     }, httpOptions);
   }
 }
