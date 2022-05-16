@@ -138,3 +138,5 @@ GitHub.sublime-settings
 .history
 cloud_sql_proxy.exe
 API/firestore_creds.json
+
+front/node_modules
