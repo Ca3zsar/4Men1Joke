@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: 'app-jokefeed',
@@ -6,10 +7,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./jokefeed.component.css']
 })
 export class JokefeedComponent implements OnInit {
+
   jokesJsonStringlike = Array<string>();
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.userService.getAllJokes().subscribe({
+      next: data => {
+        var jsonResponse = JSON.parse(data);
+
+        var keys = Object.keys(jsonResponse.jokes);
+
+        for (var i = 0; i < keys.length; i++) {
+
+          var outputFormat = {
+            "id": i,
+            "joke_key": keys[i],
+            "joke": jsonResponse.jokes[keys[i]]
+          }
+          this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
+        }
+      },
+      error: err => {
+        console.log(JSON.parse(err.error).message)
+      }
+    });
+
+    return
+
     var mock_up_data = {
       jokes : [
         {
