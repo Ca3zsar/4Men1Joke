@@ -97,7 +97,7 @@ def catOk_countup(request, joke_id):
             return HttpResponse("Joke not found", status=404)
 
         
-        ref.update({'catOk_count': ref.get()['catOk_count '] + 1})
+        ref.update({'catOk_count': ref.get()['catOk_count'] + 1})
 
         response_data = {"message": f"Joke successfully catOked!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
