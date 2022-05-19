@@ -1,3 +1,4 @@
+from datetime import datetime, timezone, timedelta
 import json
 
 import jwt
@@ -39,14 +40,11 @@ def register(request):
 
         ref.push().set(my_json)
 
-
-
-
         response_data = {"message": f"Account successfully created!"}
         username = info.get("username", "")
         email = info.get("email", "")
-
-        jwt_token = jwt.encode({'username': username, 'email' : email}, 'secret', algorithm='HS256')
+        expiry_date = datetime.now(timezone(timedelta(hours=+9))) + timedelta(days=1) 
+        jwt_token = jwt.encode({'username': username, 'email' : email, "exp":expiry_date}, 'secret', algorithm='HS256')
         response_data["token"] = jwt_token.decode('utf-8')
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
     else:

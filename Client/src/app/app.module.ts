@@ -9,13 +9,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { BoardUserComponent } from './board-user/board-user.component';
 
-import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { JokefeedComponent } from './home/jokefeed/jokefeed.component';
 import { JokeComponent } from './home/joke/joke.component';
 import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +23,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
-    BoardUserComponent,
     JokefeedComponent,
     JokeComponent,
-    FilterComponent
+    FilterComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
