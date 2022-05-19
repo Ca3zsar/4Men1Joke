@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
+import { JWTService } from '../_services/jwt_check.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
@@ -16,8 +17,9 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  username : string = '';
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
+  constructor(private jwtService : JWTService,private authService: AuthService, public tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
@@ -26,18 +28,28 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  setUser(token:string): void{
+    this.jwtService.verifyToken("cacat").subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+
   onSubmit(): void {
     const { username, password } = this.form;
-
     this.authService.login(username, password).subscribe({
-      next: data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
-
+      next: async data => {
+        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveUser(username);
+        this.username = username;
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        this.redirectToHome();
       },
       error: err => {
         this.errorMessage = err.error.message;
@@ -48,5 +60,9 @@ export class LoginComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  redirectToHome(): void {
+    window.location.href = '/home';
   }
 }
