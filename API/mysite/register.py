@@ -47,7 +47,7 @@ def register(request):
         email = info.get("email", "")
 
         jwt_token = jwt.encode({'username': username, 'email' : email}, 'secret', algorithm='HS256')
-        response_data["token"] = jwt_token
+        response_data["token"] = jwt_token.decode('utf-8')
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
     else:
         return HttpResponse("Method not allowed", status=405)
