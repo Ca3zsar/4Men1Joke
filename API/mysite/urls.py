@@ -6,6 +6,7 @@ from django.urls import include, path
 from . import register
 from . import login
 from . import jokes
+from . import jwt_checker
 
 urlpatterns = [
     path("", include("polls.urls")),
@@ -25,5 +26,6 @@ urlpatterns = [
     path("jokes/<str:joke_id>/dislikeCountDown", jokes.dislike_countdown, name="jokes"),
 
     path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),
+    path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]

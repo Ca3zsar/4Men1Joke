@@ -37,11 +37,11 @@ def login(request):
         if dict_entry[key]['password'] != password:
             response_data["message"] = "Credentials are not valid"
             response_data["reason"] = "name"
-            return HttpResponse(json.dumps(response_data), content_type="application/json", status=409)
+            return HttpResponse(json.dumps(response_data), content_type="application/json", status=401)
 
         email = dict_entry[key]['email']
         jwt_token = jwt.encode({'username': username, 'email' : email}, 'secret', algorithm='HS256')
-        response_data["token"] = jwt_token
+        response_data["token"] = jwt_token.decode('utf-8')
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)     
     else:
         return HttpResponse("Method not allowed", status=405)
