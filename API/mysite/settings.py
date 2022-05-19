@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 import environ
 from google.cloud import secretmanager
 
+from . import firebase
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,6 +17,7 @@ env_file = os.path.join(BASE_DIR, ".env")
 
 if os.path.isfile(env_file):
     # Use a local secret file, if provided
+    firebase.initialize_firebase()
 
     env.read_env(env_file)
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
@@ -25,8 +28,13 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
     name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
     payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
-
     env.read_env(io.StringIO(payload))
+
+    # Initialize Firebase
+    settings_name = os.environ.get("SETTINGS_NAME", "api-firestore-creds")
+    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    firebase.initialize_firebase(payload)
 else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 # [END gaestd_py_django_secret_config]
@@ -74,12 +82,18 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
 'django.middleware.common.CommonMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+ACCESS_CONTROL_ALLOW_ORIGIN = "*"
+ACCESS_CONTROL_ALLOW_HEADERS = "*"
+ACCEST_CONTROL_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 ROOT_URLCONF = "mysite.urls"
 CORS_ORIGIN_ALLOW_ALL = True
 ACCESS_CONTROL_ALLOW_ORIGIN = "*"
@@ -145,5 +159,4 @@ STATICFILES_DIRS = []
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-from . import firebase
-firebase.initialize_firebase()
+

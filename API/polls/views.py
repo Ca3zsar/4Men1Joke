@@ -18,4 +18,4 @@ from django.urls import reverse
 from django.views import generic
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, world. You're here")

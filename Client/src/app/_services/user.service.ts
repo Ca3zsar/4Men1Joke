@@ -38,7 +38,6 @@ export class UserService {
     return this.http.put(API_URL + `/jokes/${joke_id}/questionmark_countdown`, { responseType: 'text' });
   }
 
-
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + 'all', { responseType: 'text' });
   }

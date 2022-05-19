@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 
+
 @Component({
   selector: 'app-joke',
   templateUrl: './joke.component.html',
@@ -57,13 +58,14 @@ export class JokeComponent implements OnInit {
     }
     else {
       document.getElementById(reaction + `_${this.joke_key}`)?.classList.remove("border", "border-info", "rounded-pill", "mr-2", "ml-2");
+
     }
   }
 
   countUpDown(reaction: string) {
     if(reaction == "catOk") {
       if (this.toggledOn_catOk) {
-        this.catOk_count = (parseInt(this.catOk_count) - 1).toString();
+        this.catOk_count = (parseInt(this.catOk_count) - 1).toString()
         this.userService.catOk_countdown(this.joke_key).subscribe();
       }
       else {
