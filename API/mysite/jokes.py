@@ -172,7 +172,7 @@ def questionmark_countup(request, joke_id):
             return HttpResponse("Joke not found", status=404)
 
         
-        ref.update({'questionmark': ref.get()['questionmark_count'] + 1})
+        ref.update({'questionmark_count': ref.get()['questionmark_count'] + 1})
 
         response_data = {"message": f"Joke successfully questionmarked!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
@@ -191,7 +191,7 @@ def questionmark_countdown(request, joke_id):
             return HttpResponse("Joke not found", status=404)
 
         
-        ref.update({'questionmark': ref.get()['questionmark_count'] - 1})
+        ref.update({'questionmark_count': ref.get()['questionmark_count'] - 1})
 
         response_data = {"message": f"Joke successfully disquestionmarked!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
