@@ -22,6 +22,7 @@ export class JokefeedComponent implements OnInit {
 
           var outputFormat = {
             "id": i,
+            "joke_key": keys[i],
             "joke": jsonResponse.jokes[keys[i]]
           }
           this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
