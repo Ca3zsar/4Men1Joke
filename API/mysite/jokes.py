@@ -28,7 +28,6 @@ def jokes(request):
             return HttpResponse("Fields author, content and keys must exist!", status=400)
 
 
-
         my_json = {
             "author": author,
             "createdAt": str(date.today()),
