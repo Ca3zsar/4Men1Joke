@@ -1,6 +1,6 @@
 FROM node:lts-alpine as build
 
-WORKDIR /src/app
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
@@ -11,6 +11,6 @@ FROM fholzer/nginx-brotli:v1.12.2
 WORKDIR /etc/nginx
 ADD nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build /src/app/build /usr/share/nginx/html
+COPY --from=build /app/dist/client /usr/share/nginx/html
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]
