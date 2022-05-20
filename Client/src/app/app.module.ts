@@ -15,6 +15,8 @@ import { JokeComponent } from './home/joke/joke.component';
 import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PostComponent } from './post/post.component';
+import { MatCardModule } from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input'; 
 
 @NgModule({
   declarations: [
@@ -27,13 +29,16 @@ import { PostComponent } from './post/post.component';
     JokeComponent,
     FilterComponent,
     PostComponent
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

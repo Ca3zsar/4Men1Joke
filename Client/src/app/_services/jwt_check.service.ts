@@ -17,7 +17,7 @@ export class JWTService {
 
     verifyToken(token: string): Observable<any> {
         return this.http.post(CHECK_API, {
-            "token": "Cacat",
+            "token": token,
         }, httpOptions);
     }
 }
