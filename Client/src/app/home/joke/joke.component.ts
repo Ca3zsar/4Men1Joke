@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { UserService } from 'src/app/_services/user.service';
 
 
@@ -12,9 +13,11 @@ export class JokeComponent implements OnInit {
   @Input() jsonString?: string;
 
   userService: UserService;
-  
-  constructor(userService: UserService) {
+  tokenStorage: TokenStorageService;
+
+  constructor(userService: UserService, tokenStorage: TokenStorageService) {
     this.userService = userService;
+    this.tokenStorage = tokenStorage;
   }
 
   id = '';
@@ -63,6 +66,9 @@ export class JokeComponent implements OnInit {
   }
 
   countUpDown(reaction: string) {
+
+    if(Object.keys(this.tokenStorage.getUser()).length === 0) return;
+
     if(reaction == "catOk") {
       if (this.toggledOn_catOk) {
         this.catOk_count = (parseInt(this.catOk_count) - 1).toString()
