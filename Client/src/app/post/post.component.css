@@ -19,3 +19,13 @@
 .tags-row{
     margin-left:0.3em;
 }
+
+.tag-selector-div{
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.tag-option{
+    background-color: white;
+    color: rgb(0,0,26);
+}

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, NgModule, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -9,16 +9,15 @@ export class PostComponent implements OnInit {
   selectedTags :string[] = [];
   listOfTags = ["not_funny", "funny", "not_important", "important", "nsfw"];
   selectedOption : any;
-  defaultValue = true;
 
   constructor() { }
 
-  addNewTag(){
-    console.log("AICI");
+  addNewTag() {
     if(this.selectedOption !== "Choose a tag" && this.selectedTags.indexOf(this.selectedOption) == -1){
       this.selectedTags.push(this.selectedOption);
     }
-    this.selectedOption = "Choose a tag";
+    var yourSelect = document.getElementById( "selector" ) as HTMLSelectElement;
+    yourSelect.selectedIndex = 0;
   }
 
   ngOnInit(): void {
