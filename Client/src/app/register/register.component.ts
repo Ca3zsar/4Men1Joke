@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
+import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,public tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
   }
@@ -27,13 +28,19 @@ export class RegisterComponent implements OnInit {
     this.authService.register(username, email, password).subscribe({
       next: data => {
         console.log(data);
+        this.tokenStorage.saveUser(username);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        this.redirectToValidate();
       },
       error: err => {
         this.errorMessage = err.error.message;
         this.isSignUpFailed = true;
       }
     });
+  }
+
+  redirectToValidate(): void {
+    window.location.href = '/validate';
   }
 }

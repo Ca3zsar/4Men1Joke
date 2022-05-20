@@ -16,6 +16,7 @@ import { JokefeedComponent } from './home/jokefeed/jokefeed.component';
 import { JokeComponent } from './home/joke/joke.component';
 import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ValidateTokenComponent } from './validate-token/validate-token.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BoardUserComponent,
     JokefeedComponent,
     JokeComponent,
-    FilterComponent
+    FilterComponent,
+    ValidateTokenComponent
   ],
   imports: [
     BrowserModule,
