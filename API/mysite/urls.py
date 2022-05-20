@@ -8,6 +8,7 @@ from . import login
 from . import jokes
 from . import jwt_checker
 from . import codeVerification
+from . import comments
 
 urlpatterns = [
     path("", include("polls.urls")),
@@ -32,5 +33,9 @@ urlpatterns = [
 
     path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
+
+
+    path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]
