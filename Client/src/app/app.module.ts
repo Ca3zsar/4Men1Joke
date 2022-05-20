@@ -10,6 +10,8 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 
 import { JokefeedComponent } from './home/jokefeed/jokefeed.component';
 import { JokeComponent } from './home/joke/joke.component';
@@ -18,7 +20,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PostComponent } from './post/post.component';
 import { MatCardModule } from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input'; 
-import {MatSelectModule} from '@angular/material/select'; 
+import {MatSelectModule} from '@angular/material/select';
+import { FileUploadComponent } from './post/file-upload/file-upload.component'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +33,8 @@ import {MatSelectModule} from '@angular/material/select';
     JokefeedComponent,
     JokeComponent,
     FilterComponent,
-    PostComponent
+    PostComponent,
+    FileUploadComponent
     
   ],
   imports: [
@@ -41,9 +46,11 @@ import {MatSelectModule} from '@angular/material/select';
     MatCardModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule,
+    MatProgressBarModule
   ],
-  providers: [],
+  providers: [FileUploadComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

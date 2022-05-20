@@ -1,5 +1,5 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-
+import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -9,8 +9,10 @@ export class PostComponent implements OnInit {
   selectedTags :string[] = [];
   listOfTags = ["not_funny", "funny", "not_important", "important", "nsfw"];
   selectedOption : any;
+  @ViewChild('imageUploader') imageUploader : FileUploadComponent | undefined; 
 
-  constructor() { }
+  constructor() { 
+  }
 
   addNewTag() {
     if(this.selectedOption !== "Choose a tag" && this.selectedTags.indexOf(this.selectedOption) == -1){

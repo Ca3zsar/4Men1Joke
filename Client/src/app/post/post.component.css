@@ -29,3 +29,8 @@
     background-color: white;
     color: rgb(0,0,26);
 }
+
+.selector{
+    border: 1px solid rgb(225, 219, 219);
+    background-color: white;
+}
