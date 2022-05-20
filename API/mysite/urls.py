@@ -7,6 +7,7 @@ from . import register
 from . import login
 from . import jokes
 from . import jwt_checker
+from . import codeVerification
 
 urlpatterns = [
     path("", include("polls.urls")),
@@ -14,7 +15,7 @@ urlpatterns = [
     path("register", register.register, name="register"),
     path("login", login.login, name="login"),
     path("jokes", jokes.jokes, name="jokes"),
-
+    path("validate", codeVerification.codeVerification, name="validate"),
 
     path("username/<str:username>/jokes", jokes.get_jokes_by_username, name="jokes"),
     path("key/<str:key>/jokes", jokes.get_jokes_by_key, name="jokes"),

@@ -39,9 +39,13 @@ def login(request):
             response_data["reason"] = "name"
             return HttpResponse(json.dumps(response_data), content_type="application/json", status=401)
 
+        if dict_entry[key]['isVerified'] != 1:
+            response_data["message"] = "Account is not verified"
+            return HttpResponse(json.dumps(response_data), content_type="application/json", status=409)
+
         email = dict_entry[key]['email']
         jwt_token = jwt.encode({'username': username, 'email' : email}, 'secret', algorithm='HS256')
-        response_data["token"] = jwt_token.decode('utf-8')
+        response_data["token"] = jwt_token
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)     
     else:
         return HttpResponse("Method not allowed", status=405)
