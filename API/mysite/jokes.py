@@ -13,37 +13,29 @@ def jokes(request):
 
     if request.method == 'POST':
         response_data = {}
-        info = json.loads(request.body)
+        info = request.POST
 
         author = info.get("author", "")
         content = info.get("content", "")
-        photo_url = info.get("photo_url", "")
-        # catOk_count = info.get("catOk_count", "")
-        # BASADO_count = info.get("BASADO_count", "")
-        # questionmark_count = info.get("questionmark_count", "")
-        keys = info.get("keys", "")
+        image = request.FILES.get("image", "")
+        tags = info.get("tags", "")
         
-
-        if author == "" or content == "" or keys == "":
+        if author == "" or content == "" or tags == "":
             return HttpResponse("Fields author, content and keys must exist!", status=400)
 
-
+        image_url = image.name if image else ""
         my_json = {
             "author": author,
             "createdAt": str(date.today()),
             "content": content,
-            "photo_url": photo_url,
-
+            "photo_url": image_url,
             "catOk_count": 0,
             "BASADO_count": 0,
             "questionmark_count": 0,
-
-            "keys": keys,
+            "keys": tags.split(",")
         }
 
-     
         ref = db.reference('/jokes')
-
         ref.push().set(my_json)
 
         response_data = {"message": f"Joke successfully created!"}
