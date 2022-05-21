@@ -32,6 +32,10 @@ urlpatterns = [
 
 
     path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),
+
+    path("jokes/deleteToxicPosts", jokes.delete_toxic_posts, name="jokes"),
+
+
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 
 
