@@ -28,6 +28,9 @@ import { FileUploadComponent } from './post/file-upload/file-upload.component';
 import { ValidateTokenComponent } from './validate-token/validate-token.component';
 import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DashboardComponent } from './profile/dashboard/dashboard.component';
+import { PostsComponent } from './profile/posts/posts.component';
+import { CommentsComponent } from './profile/comments/comments.component';
 
 
 @NgModule({
@@ -43,7 +46,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     PostComponent,
     FileUploadComponent,
     ValidateTokenComponent,
-    CommentsDialogComponent
+    CommentsDialogComponent,
+    DashboardComponent,
+    PostsComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,
