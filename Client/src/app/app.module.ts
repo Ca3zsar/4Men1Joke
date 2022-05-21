@@ -16,6 +16,7 @@ import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ValidateTokenComponent } from './validate-token/validate-token.component';
 import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

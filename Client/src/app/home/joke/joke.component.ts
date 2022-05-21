@@ -106,10 +106,4 @@ export class JokeComponent implements OnInit {
       this.changeButtonState(reaction, this.toggledOn_questionmark);
     }
   }
-
-
-  showCommentsDialog() {
-    
-  }
-
 }
