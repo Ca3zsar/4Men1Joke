@@ -1,4 +1,3 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 @Component({
@@ -9,25 +8,27 @@ import { finalize, Subscription } from 'rxjs';
 export class FileUploadComponent {
 
     acceptedTypes : string[] = ['image/png', 'image/jpeg', 'image/gif'];
-
+    file! : File;
     fileName = '';
     imgSrc : string = '';
     uploadSub?: Subscription | null;
 
-    constructor(private http: HttpClient) {}
+    constructor() {}
 
     onFileSelected(event : any) {
-        const file:File = event.target.files[0];
-      
-        if (file) {
-            this.fileName = file.name;
+        const fileTemp:File = event.target.files[0];
+        this.file = fileTemp;
+        if (this.file) {
+            this.fileName = this.file.name;
             const formData = new FormData();
             const reader = new FileReader();
-            reader.readAsDataURL(file); // toBase64
+
+            reader.readAsDataURL(this.file); // toBase64
             reader.onload = () => {
               this.imgSrc = reader.result as string; // base64 Image src
             };
-            formData.append("thumbnail", file);
+            console.log(this.file);
+            formData.append("thumbnail", this.file);
 
             // const upload$ = this.http.post("/api/thumbnail-upload", formData, {
             //     reportProgress: true,

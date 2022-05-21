@@ -1,6 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TokenStorageService } from '../_services/token-storage.service';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+
+const API_LINK = 'https://man1joke.lm.r.appspot.com/jokes';
+
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -15,7 +20,7 @@ export class PostComponent implements OnInit {
 
   @ViewChild('imageUploader') imageUploader : FileUploadComponent | undefined; 
 
-  constructor(fb: FormBuilder) { 
+  constructor(private http: HttpClient,fb: FormBuilder, public tokenStorage: TokenStorageService) { 
     this.post_form = fb.group({
       "title": [null, Validators.compose([Validators.required])],
       "content": [null, Validators.compose([Validators.required])]
@@ -34,7 +39,7 @@ export class PostComponent implements OnInit {
     this.markFormTouched(this.post_form);
     if (this.post_form.valid && this.selectedTags.length > 0) {
       var formValues = this.post_form.getRawValue();
-      console.log(formValues);
+      this.sendPostRequest(formValues);
     }else{
       if(this.selectedTags.length == 0)
       {
@@ -42,13 +47,36 @@ export class PostComponent implements OnInit {
       }else{
         this.validationError = false;
       }
-      console.log("cacat");
     }
+  }
+
+  sendPostRequest(formValues : any)
+  {
+    let formData : FormData = new FormData();
+    formData.append('title', formValues.title);
+    formData.append('content',formValues.content);
+    formData.append('tags',this.selectedTags.toString());
+    formData.append('image',this.imageUploader!.file);
+    formData.append('author', this.tokenStorage.getUser());
+    for (var key of formData.entries()) {
+			console.log(key[0] + ', ' + key[1])
+		}
+    const upload$ = this.http.post(API_LINK,formData,
+      ).subscribe(
+      {
+        next: (data) => {
+          window.location.href = '/home';
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      }
+    );
   }
 
   markFormTouched(group: FormGroup | FormArray) {
     Object.keys(group.controls).forEach((key: string) => {
-      const control = (group.controls as any)[key ];
+      const control = (group.controls as any)[key];
       if (control instanceof FormGroup || control instanceof FormArray) { control.markAsTouched(); this.markFormTouched(control); }
       else { control.markAsTouched(); };
     });
