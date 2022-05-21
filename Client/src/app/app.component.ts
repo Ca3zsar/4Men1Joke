@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { JWTService } from './_services/jwt_check.service';
 import { TokenStorageService } from './_services/token-storage.service';
 
 @Component({
@@ -13,16 +14,22 @@ export class AppComponent {
   showModeratorBoard = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService, private jwtService: JWTService) { }
 
   ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    var token = this.tokenStorageService.getToken();
+    if (token) {
+      this.jwtService.verifyToken(token).subscribe(
+        data => {
+          this.isLoggedIn = true;
+          const user = this.tokenStorageService.getUser();
+          this.username = user;
+        }
+        ,error => {
+          this.tokenStorageService.signOut();
+        }
+      );
 
-    if (this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
-      // this.roles = user.roles;
-
-      this.username = user;
     }
   }
 

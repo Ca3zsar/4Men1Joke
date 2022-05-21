@@ -8,15 +8,27 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';;
+import { ProfileComponent } from './profile/profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
+
 
 import { JokefeedComponent } from './home/jokefeed/jokefeed.component';
 import { JokeComponent } from './home/joke/joke.component';
 import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { PostComponent } from './post/post.component';
+import { MatCardModule } from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input'; 
+import {MatSelectModule} from '@angular/material/select';
+import { FileUploadComponent } from './post/file-upload/file-upload.component'; 
+
 import { ValidateTokenComponent } from './validate-token/validate-token.component';
 import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -28,6 +40,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     JokefeedComponent,
     JokeComponent,
     FilterComponent,
+    PostComponent,
+    FileUploadComponent
     ValidateTokenComponent,
     CommentsDialogComponent
   ],
@@ -37,9 +51,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatCardModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatProgressBarModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [FileUploadComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

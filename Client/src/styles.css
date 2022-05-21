@@ -1,14 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
+@font-face {
+    font-family: "OpenSans";
+    src: url(assets/fonts/OpenSans-Regular.ttf);
+}
+
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-
-/* .snackbar-over-modal {
-    z-index: 10000;
-} */
-
+body { margin: 0; font-family: "OpenSans" ,Roboto, "Helvetica Neue", sans-serif !important; }
 
 .cdk-overlay-container {
     position: fixed;
