@@ -37,5 +37,7 @@ urlpatterns = [
 
     path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
 
+
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]

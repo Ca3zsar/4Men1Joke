@@ -107,4 +107,9 @@ export class JokeComponent implements OnInit {
     }
   }
 
+
+  showCommentsDialog() {
+    
+  }
+
 }
