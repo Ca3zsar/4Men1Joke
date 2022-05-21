@@ -74,7 +74,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
-    "mysite.apps.PollsConfig",
+    "backend.apps.JokesConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -102,7 +102,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 ACCESS_CONTROL_ALLOW_ORIGIN = "*"
 ACCESS_CONTROL_ALLOW_HEADERS = "*"
 ACCEST_CONTROL_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-ROOT_URLCONF = "mysite.urls"
+ROOT_URLCONF = "backend.urls"
 CORS_ORIGIN_ALLOW_ALL = True
 ACCESS_CONTROL_ALLOW_ORIGIN = "*"
 ACCESS_CONTROL_ALLOW_HEADERS = "*"
@@ -124,7 +124,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "mysite.wsgi.application"
+WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     'default': {

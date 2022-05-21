@@ -11,7 +11,7 @@ from . import codeVerification
 from . import comments
 
 urlpatterns = [
-    path("", include("polls.urls")),
+    path("", include("jokes.urls")),
     path("admin/", admin.site.urls),
     path("register", register.register, name="register"),
     path("login", login.login, name="login"),

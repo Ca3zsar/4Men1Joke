@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
-
-from django.db import models
-from django.utils import timezone
+from django.apps import AppConfig
 
 
+class JokesConfig(AppConfig):
+    name = 'jokes'
