@@ -41,7 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     JokeComponent,
     FilterComponent,
     PostComponent,
-    FileUploadComponent
+    FileUploadComponent,
     ValidateTokenComponent,
     CommentsDialogComponent
   ],
