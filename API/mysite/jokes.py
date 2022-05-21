@@ -3,18 +3,29 @@ import json
 import jwt
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+from google.cloud import storage
 from firebase_admin import db
-
 from datetime import date
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+import sys
+
+
+def save_image_to_cloud_storage(image):
+    # save image to cloud storage
+    storage_client = storage.Client.from_service_account_json(
+        'cloud-storage1.json')
+    bucket = storage_client.get_bucket('jokes-images')
+    blob = bucket.blob(image.name)
+    blob.upload_from_file(image)
+
 
 @csrf_exempt
 def jokes(request):
-
     if request.method == 'POST':
         response_data = {}
         info = request.POST
-
         author = info.get("author", "")
         content = info.get("content", "")
         image = request.FILES.get("image", "")
@@ -22,8 +33,24 @@ def jokes(request):
         
         if author == "" or content == "" or tags == "":
             return HttpResponse("Fields author, content and keys must exist!", status=400)
+        if image:
+            # add current date to image name to avoid overwriting
+            image.name = date.today().strftime("%Y%m%d") + image.name
+            im = Image.open(image)
+            output = BytesIO()
+            # Resize/modify the image
+            im = im.resize((100, 100))
+            # resize image from InMemoryUploadedFile
+            im.save(output, format='JPEG', quality=100)
+            output.seek(0)
+            # change the imagefield value to be the newley modifed image value
+            img = InMemoryUploadedFile(output, 'ImageField',image.name, 'image/jpeg',
+                                            sys.getsizeof(output), None)
+            save_image_to_cloud_storage(img)
 
-        image_url = image.name if image else ""
+        url_image = 'https://storage.cloud.google.com/jokes-images/'
+        image_url = url_image + image.name if image else ""
+        print(image_url)
         my_json = {
             "author": author,
             "createdAt": str(date.today()),
@@ -49,6 +76,7 @@ def jokes(request):
     else:
         return HttpResponse("Method not allowed", status=405)
 
+
 @csrf_exempt
 def get_jokes_by_username(request, username):
     if request.method == 'GET':
@@ -59,6 +87,7 @@ def get_jokes_by_username(request, username):
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
     else:
         return HttpResponse("Method not allowed", status=405)
+
 
 @csrf_exempt
 def get_jokes_by_key(request, key):
@@ -87,7 +116,6 @@ def catOk_countup(request, joke_id):
         #check if ref exists
         if ref.get() is None:
             return HttpResponse("Joke not found", status=404)
-
         
         ref.update({'catOk_count': ref.get()['catOk_count'] + 1})
 
@@ -102,12 +130,10 @@ def catOk_countdown(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        
-        #check if ref exists
+        # check if ref exists
         if ref.get() is None:
             return HttpResponse("Joke not found", status=404)
 
-        
         ref.update({'catOk_count': ref.get()['catOk_count'] - 1})
 
         response_data = {"message": f"Joke successfully discatOked!"}
@@ -121,8 +147,7 @@ def BASADO_countup(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-
-        #check if ref exists
+        # check if ref exists
         if ref.get() is None:
             return HttpResponse("Joke not found", status=404)
 
@@ -139,11 +164,9 @@ def BASADO_countdown(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        
-        #check if ref exists
+        # check if ref exists
         if ref.get() is None:
             return HttpResponse("Joke not found", status=404)
-
         
         ref.update({'BASADO_count': ref.get()['BASADO_count'] - 1})
 
@@ -158,11 +181,9 @@ def questionmark_countup(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        
-        #check if ref exists
+        # check if ref exists
         if ref.get() is None:
             return HttpResponse("Joke not found", status=404)
-
         
         ref.update({'questionmark_count': ref.get()['questionmark_count'] + 1})
 
@@ -178,11 +199,10 @@ def questionmark_countdown(request, joke_id):
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
         
-        #check if ref exists
+        # check if ref exists
         if ref.get() is None:
             return HttpResponse("Joke not found", status=404)
 
-        
         ref.update({'questionmark_count': ref.get()['questionmark_count'] - 1})
 
         response_data = {"message": f"Joke successfully disquestionmarked!"}
