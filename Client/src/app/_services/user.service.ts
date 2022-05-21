@@ -46,7 +46,7 @@ export class UserService {
 
 
   postComment(joke_id: string, username: string, comment: string): Observable<any> {
-    return this.http.post(API_URL + `/jokes/${joke_id}/comment`, { username, comment }, { responseType: 'text' });
+    return this.http.post(API_URL + `/jokes/${joke_id}/comments`, { username, comment }, { responseType: 'text' });
   }
 
 
