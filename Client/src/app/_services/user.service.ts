@@ -14,6 +14,9 @@ export class UserService {
     return this.http.get(API_URL + '/jokes', { responseType: 'text' });
   }
 
+  // ----------------------------------------------------
+
+
   catOk_countup(joke_id : string): Observable<any> {
     return this.http.put(API_URL + `/jokes/${joke_id}/catOk_countup`, { responseType: 'text' });
   }
@@ -37,6 +40,20 @@ export class UserService {
   questionmark_countdown(joke_id : string): Observable<any> {
     return this.http.put(API_URL + `/jokes/${joke_id}/questionmark_countdown`, { responseType: 'text' });
   }
+
+
+  // ----------------------------------------------------
+
+
+  postComment(joke_id: string, username: string, comment: string): Observable<any> {
+    return this.http.post(API_URL + `/jokes/${joke_id}/comment`, { username, comment }, { responseType: 'text' });
+  }
+
+
+  getCommentsByJokeId(joke_id: string): Observable<any> {
+    return this.http.get(API_URL + `/jokes/${joke_id}/comments`, { responseType: 'text' });
+  }
+
 
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + 'all', { responseType: 'text' });

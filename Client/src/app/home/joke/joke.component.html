@@ -1,5 +1,5 @@
 <div class="container mb-3">
-    <div class="card" style="width: 100%;">
+    <div class="card dropdown" style="width: 100%;">
         <div class="card-header">
             <div class="container">
                 <div class="row">
@@ -38,8 +38,10 @@
                         <div class="col">
                             <span class="px-2"> {{questionmark_count}} </span>
                             <img (click)="countUpDown('questionmark')" id="questionmark_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/5f196b28fe85fb4472d11fb8/3x" >
-
                         </div>
+                        <button (click)="showCommentsDialog" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                            Comments
+                        </button>
                     </div>
                 </div>
                 <div class="col">
@@ -49,6 +51,8 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+
+<app-comments-dialog [joke_id]="joke_key"></app-comments-dialog>
