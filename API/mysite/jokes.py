@@ -203,3 +203,19 @@ def delete_joke(request, joke_id):
     else:
         return HttpResponse("Method not allowed", status=405)
 
+
+@csrf_exempt
+def delete_toxic_posts(request):
+    if request.method == 'DELETE':
+        response_data = {}
+        ref = db.reference('/jokes')
+        jokes = ref.get()
+
+        for id in jokes:
+            if jokes[id]["questionmark_count"] > 2 * jokes[id]["BASADO_count"]:
+                ref.child(id).delete()
+        
+        response_data = {"message": f"Toxic posts successfully deleted!"}
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    else:
+        return HttpResponse("Method not allowed", status=405)
