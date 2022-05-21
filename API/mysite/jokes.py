@@ -1,20 +1,20 @@
 import json
+from time import strftime
 
-import jwt
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from google.cloud import storage
 from firebase_admin import db
 from datetime import date
-from PIL import Image
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from io import BytesIO
-import sys
-
+from .settings import STORAGE_CREDS
 
 def save_image_to_cloud_storage(image):
     # save image to cloud storage
-    storage_client = storage.Client.from_service_account_json(
+    if STORAGE_CREDS:
+        storage_client = storage.Client.from_service_account_info(json.loads(STORAGE_CREDS))
+    else:
+        storage_client = storage.Client.from_service_account_json(
         'cloud-storage1.json')
     bucket = storage_client.get_bucket('jokes-images')
     blob = bucket.blob(image.name)
@@ -35,25 +35,15 @@ def jokes(request):
             return HttpResponse("Fields author, content and keys must exist!", status=400)
         if image:
             # add current date to image name to avoid overwriting
-            image.name = date.today().strftime("%Y%m%d") + image.name
-            im = Image.open(image)
-            output = BytesIO()
-            # Resize/modify the image
-            im = im.resize((100, 100))
-            # resize image from InMemoryUploadedFile
-            im.save(output, format='JPEG', quality=100)
-            output.seek(0)
-            # change the imagefield value to be the newley modifed image value
-            img = InMemoryUploadedFile(output, 'ImageField',image.name, 'image/jpeg',
-                                            sys.getsizeof(output), None)
-            save_image_to_cloud_storage(img)
+            image.name = datetime.now().strftime("%Y%m%d%H%M%S") + image.name
+            save_image_to_cloud_storage(image)
 
-        url_image = 'https://storage.cloud.google.com/jokes-images/'
+        url_image = 'https://storage.googleapis.com/jokes-images/'
         image_url = url_image + image.name if image else ""
         print(image_url)
         my_json = {
             "author": author,
-            "createdAt": str(date.today()),
+            "createdAt": str(datetime.now().strftime("%Y-%m-%d %H:%M")),
             "content": content,
             "photo_url": image_url,
             "catOk_count": 0,
