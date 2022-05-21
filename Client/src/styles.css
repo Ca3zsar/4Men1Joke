@@ -7,3 +7,8 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: "OpenSans" ,Roboto, "Helvetica Neue", sans-serif !important; }
+
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 10000;
+}

@@ -1,5 +1,5 @@
 <div class="container mb-3">
-    <div class="card" style="width: 100%;">
+    <div class="card dropdown" style="width: 100%;">
         <div class="card-header">
             <div class="container">
                 <div class="row">
@@ -29,16 +29,19 @@
                     <div class="row">
                         <div class="col">
                             <span class="px-2"> {{catOk_count}} </span>
-                            <img (click)="countUpDown('catOk')" id="catOk_{{id}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6137a8e1af28e956864c6cfc/3x" >
+                            <img (click)="countUpDown('catOk')" id="catOk_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6137a8e1af28e956864c6cfc/3x" >
                         </div>
                         <div class="col">
                             <span class="px-2"> {{BASADO_count}} </span>
-                            <img (click)="countUpDown('BASADO')" id="BASADO_{{id}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6160b07ab63cc97ee6d569ff/3x" >
+                            <img (click)="countUpDown('BASADO')" id="BASADO_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6160b07ab63cc97ee6d569ff/3x" >
                         </div>
                         <div class="col">
                             <span class="px-2"> {{questionmark_count}} </span>
-                            <img (click)="countUpDown('questionmark')" id="questionmark_{{id}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/5f196b28fe85fb4472d11fb8/3x" >
+                            <img (click)="countUpDown('questionmark')" id="questionmark_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/5f196b28fe85fb4472d11fb8/3x" >
                         </div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"  [attr.data-target]="'#modal' + joke_key">
+                            Comments
+                        </button>
                     </div>
                 </div>
                 <div class="col">
@@ -48,6 +51,8 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+
+<app-comments-dialog [joke_id]="joke_key"></app-comments-dialog>

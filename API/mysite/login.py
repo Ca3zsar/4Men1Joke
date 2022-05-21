@@ -39,6 +39,10 @@ def login(request):
             response_data["reason"] = "name"
             return HttpResponse(json.dumps(response_data), content_type="application/json", status=401)
 
+        if dict_entry[key]['isVerified'] != 1:
+            response_data["message"] = "Account is not verified"
+            return HttpResponse(json.dumps(response_data), content_type="application/json", status=409)
+
         email = dict_entry[key]['email']
 
         expiry_date = datetime.now(timezone(timedelta(hours=+9))) + timedelta(days=1) 

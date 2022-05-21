@@ -28,4 +28,10 @@ export class AuthService {
       "password":password
     }, httpOptions);
   }
+  validate_token(verification_code: string,username:string): Observable<any> {
+    return this.http.post(AUTH_API + 'validate', {
+      "verification_code": verification_code,
+      "username": username
+    }, httpOptions);
+  }
 }

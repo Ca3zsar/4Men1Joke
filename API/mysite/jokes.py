@@ -6,33 +6,36 @@ from django.http import HttpResponse
 
 from firebase_admin import db
 
+from datetime import date
+
 @csrf_exempt
 def jokes(request):
 
     if request.method == 'POST':
         response_data = {}
-        info = json.loads(request.body)
+        info = request.POST
 
         author = info.get("author", "")
         content = info.get("content", "")
-        keys = info.get("keys", "")
-        photo_uri = info.get("photo_uri", "")
-
-        if author == "" or content == "" or keys == "":
+        image = request.FILES.get("image", "")
+        tags = info.get("tags", "")
+        
+        if author == "" or content == "" or tags == "":
             return HttpResponse("Fields author, content and keys must exist!", status=400)
 
+        image_url = image.name if image else ""
         my_json = {
             "author": author,
+            "createdAt": str(date.today()),
             "content": content,
-            "keys": keys,
-            "photo_uri": photo_uri,
-            "likes": 0,
-            "dislikes": 0
+            "photo_url": image_url,
+            "catOk_count": 0,
+            "BASADO_count": 0,
+            "questionmark_count": 0,
+            "keys": tags.split(",")
         }
 
-     
         ref = db.reference('/jokes')
-
         ref.push().set(my_json)
 
         response_data = {"message": f"Joke successfully created!"}
@@ -76,52 +79,113 @@ def get_jokes_by_key(request, key):
 
 
 @csrf_exempt
-def like_countup(request, joke_id):
+def catOk_countup(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        ref.update({'likes': ref.get()['likes'] + 1})
+        
+        #check if ref exists
+        if ref.get() is None:
+            return HttpResponse("Joke not found", status=404)
 
-        response_data = {"message": f"Joke successfully liked!"}
+        
+        ref.update({'catOk_count': ref.get()['catOk_count'] + 1})
+
+        response_data = {"message": f"Joke successfully catOked!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
     else:
         return HttpResponse("Method not allowed", status=405)
 
 
 @csrf_exempt
-def like_countdown(request, joke_id):
+def catOk_countdown(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        ref.update({'likes': ref.get()['likes'] - 1})
+        
+        #check if ref exists
+        if ref.get() is None:
+            return HttpResponse("Joke not found", status=404)
 
-        response_data = {"message": f"Joke successfully liked!"}
+        
+        ref.update({'catOk_count': ref.get()['catOk_count'] - 1})
+
+        response_data = {"message": f"Joke successfully discatOked!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
     else:
         return HttpResponse("Method not allowed", status=405)
 
 
 @csrf_exempt
-def dislike_countup(request, joke_id):
+def BASADO_countup(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        ref.update({'dislikes': ref.get()['dislikes'] + 1})
 
-        response_data = {"message": f"Joke successfully disliked!"}
+        #check if ref exists
+        if ref.get() is None:
+            return HttpResponse("Joke not found", status=404)
+
+        ref.update({'BASADO_count': ref.get()['BASADO_count'] + 1})
+
+        response_data = {"message": f"Joke successfully BASADOed!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
     else:
         return HttpResponse("Method not allowed", status=405)
 
 
 @csrf_exempt
-def dislike_countdown(request, joke_id):
+def BASADO_countdown(request, joke_id):
     if request.method == 'PUT':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
-        ref.update({'dislikes': ref.get()['dislikes'] - 1})
+        
+        #check if ref exists
+        if ref.get() is None:
+            return HttpResponse("Joke not found", status=404)
 
-        response_data = {"message": f"Joke successfully disliked!"}
+        
+        ref.update({'BASADO_count': ref.get()['BASADO_count'] - 1})
+
+        response_data = {"message": f"Joke successfully disBASADOed!"}
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+
+@csrf_exempt
+def questionmark_countup(request, joke_id):
+    if request.method == 'PUT':
+        response_data = {}
+        ref = db.reference('/jokes/' + joke_id)
+        
+        #check if ref exists
+        if ref.get() is None:
+            return HttpResponse("Joke not found", status=404)
+
+        
+        ref.update({'questionmark_count': ref.get()['questionmark_count'] + 1})
+
+        response_data = {"message": f"Joke successfully questionmarked!"}
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+
+@csrf_exempt
+def questionmark_countdown(request, joke_id):
+    if request.method == 'PUT':
+        response_data = {}
+        ref = db.reference('/jokes/' + joke_id)
+        
+        #check if ref exists
+        if ref.get() is None:
+            return HttpResponse("Joke not found", status=404)
+
+        
+        ref.update({'questionmark_count': ref.get()['questionmark_count'] - 1})
+
+        response_data = {"message": f"Joke successfully disquestionmarked!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
     else:
         return HttpResponse("Method not allowed", status=405)

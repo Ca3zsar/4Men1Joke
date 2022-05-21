@@ -13,15 +13,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 
+
 import { JokefeedComponent } from './home/jokefeed/jokefeed.component';
 import { JokeComponent } from './home/joke/joke.component';
 import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { PostComponent } from './post/post.component';
 import { MatCardModule } from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input'; 
 import {MatSelectModule} from '@angular/material/select';
 import { FileUploadComponent } from './post/file-upload/file-upload.component'; 
+
+import { ValidateTokenComponent } from './validate-token/validate-token.component';
+import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +42,8 @@ import { FileUploadComponent } from './post/file-upload/file-upload.component';
     FilterComponent,
     PostComponent,
     FileUploadComponent
-    
+    ValidateTokenComponent,
+    CommentsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +56,8 @@ import { FileUploadComponent } from './post/file-upload/file-upload.component';
     MatSelectModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSnackBarModule
   ],
   providers: [FileUploadComponent],
   bootstrap: [AppComponent]
