@@ -1,4 +1,5 @@
 import io
+import logging
 import os
 from urllib.parse import urlparse
 
@@ -25,6 +26,7 @@ if os.path.isfile(env_file):
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     # Pull secrets from Secret Manager
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    logging.info(f"project_id: {project_id}")
 
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.environ.get("SETTINGS_NAME", "django_settings")

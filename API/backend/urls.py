@@ -9,9 +9,10 @@ from . import jokes
 from . import jwt_checker
 from . import codeVerification
 from . import comments
+from . import subscribe
 
 urlpatterns = [
-    path("", include("polls.urls")),
+    path("", include("jokes.urls")),
     path("admin/", admin.site.urls),
     path("register", register.register, name="register"),
     path("login", login.login, name="login"),
@@ -35,7 +36,8 @@ urlpatterns = [
 
     path("jokes/deleteToxicPosts", jokes.delete_toxic_posts, name="jokes"),
 
-
+    path("subscribe", subscribe.subscribe, name="subscribe"),
+    path('unsubscribe', subscribe.unsubscribe, name="unsuscribe"),
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 
 
