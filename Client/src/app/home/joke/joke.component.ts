@@ -86,7 +86,4 @@ export class JokeComponent implements OnInit {
     }
 
   }
-  countUpDown(reaction: string) {
-
-  }
 }

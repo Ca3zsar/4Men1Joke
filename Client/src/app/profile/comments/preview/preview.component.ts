@@ -21,25 +21,24 @@ export class PreviewComponent implements OnInit {
   id = '';
   joke_key = '';
 
+  votes = {
+    catOk_count : 0,
+    laugh_count : 0,
+    dislike_count : 0
+  }
+
   author = '';
   createdAt = '';
   content = '';
   photo_url = '';
-  catOk_count = '';
-  BASADO_count = '';
-  questionmark_count = '';
   keys?: string[];
 
-
   toggledOn_catOk = false;
-  toggledOn_BASSADO = false;
-  toggledOn_questionmark = false;
+  toggledOn_laugh = false;
+  toggledOn_dislike = false;
 
   ngOnInit(): void {
     if(this.jsonString) {
-      
-      console.log(this.jsonString);
-
       this.id = this.jsonString.id;
       this.joke_key = this.jsonString["joke_key"];
 
@@ -48,9 +47,9 @@ export class PreviewComponent implements OnInit {
       this.content = this.jsonString.joke["content"];
       this.photo_url = this.jsonString.joke["photo_url"];
 
-      this.catOk_count = this.jsonString.joke["catOk_count"];
-      this.BASADO_count = this.jsonString.joke["BASADO_count"];
-      this.questionmark_count = this.jsonString.joke["questionmark_count"];
+      this.votes.catOk_count = this.jsonString.joke["catOk_count"];
+      this.votes.laugh_count = this.jsonString.joke["laugh_count"];
+      this.votes.dislike_count = this.jsonString.joke["dislike_count"];
       
     }
   }
@@ -65,46 +64,24 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  countUpDown(reaction: string) {
-
-    if(Object.keys(this.tokenStorage.getUser()).length === 0) return;
+  triggerVote(reaction : string){
+    if(this.tokenStorage.getToken() == null) return;
+    this.userService.updateVote(this.joke_key, reaction, this.tokenStorage.getToken()!).subscribe();
 
     if(reaction == "catOk") {
-      if (this.toggledOn_catOk) {
-        this.catOk_count = (parseInt(this.catOk_count) - 1).toString()
-        this.userService.catOk_countdown(this.joke_key).subscribe();
-      }
-      else {
-        this.catOk_count = (parseInt(this.catOk_count) + 1).toString();
-        this.userService.catOk_countup(this.joke_key).subscribe();
-      }
       this.toggledOn_catOk = !this.toggledOn_catOk;
+      this.votes.catOk_count = this.votes.catOk_count + (this.toggledOn_catOk? 1 : -1);
       this.changeButtonState(reaction, this.toggledOn_catOk);
-    } 
-    else if(reaction == "BASADO") {
-      if (this.toggledOn_BASSADO) {
-        this.BASADO_count = (parseInt(this.BASADO_count) - 1).toString();
-        this.userService.BASADO_countdown(this.joke_key).subscribe();
-      }
-      else {
-        this.BASADO_count = (parseInt(this.BASADO_count) + 1).toString();
-        this.userService.BASADO_countup(this.joke_key).subscribe();
-      }
-      this.toggledOn_BASSADO = !this.toggledOn_BASSADO;
-      this.changeButtonState(reaction, this.toggledOn_BASSADO);
-    } 
-    else if(reaction == "questionmark") {
-      if (this.toggledOn_questionmark) {
-        this.questionmark_count = (parseInt(this.questionmark_count) - 1).toString();
-        this.userService.questionmark_countdown(this.joke_key).subscribe();
-      }
-      else {
-        this.questionmark_count = (parseInt(this.questionmark_count) + 1).toString();
-        this.userService.questionmark_countup(this.joke_key).subscribe();
-      }
-      this.toggledOn_questionmark = !this.toggledOn_questionmark;
-      this.changeButtonState(reaction, this.toggledOn_questionmark);
+    }else if(reaction == "laugh") {
+      this.toggledOn_laugh = !this.toggledOn_laugh;
+      this.votes.laugh_count = this.votes.laugh_count + (this.toggledOn_laugh? 1 : -1);
+      this.changeButtonState(reaction, this.toggledOn_laugh);
+    }else{
+      this.toggledOn_dislike = !this.toggledOn_dislike;
+      this.votes.dislike_count = this.votes.dislike_count + (this.toggledOn_dislike? 1 : -1);
+      this.changeButtonState(reaction, this.toggledOn_dislike);
     }
+
   }
 
 }
