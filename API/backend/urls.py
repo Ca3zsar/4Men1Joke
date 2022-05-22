@@ -31,6 +31,7 @@ urlpatterns = [
     path("jokes/<str:joke_id>/questionmark_countup", jokes.questionmark_countup, name="jokes"),
     path("jokes/<str:joke_id>/questionmark_countdown", jokes.questionmark_countdown, name="jokes"),
 
+    path("jokes/<str:joke_id>", jokes.update_vote, name="jokes"),
 
     path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),
 
@@ -38,6 +39,7 @@ urlpatterns = [
 
     path("subscribe", subscribe.subscribe, name="subscribe"),
     path('unsubscribe', subscribe.unsubscribe, name="unsuscribe"),
+    path('subscriptions', subscribe.get_subscriptions, name="subscriptions"),
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 
 

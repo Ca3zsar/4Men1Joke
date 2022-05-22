@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 import jwt
 from firebase_admin import db
 
+from .settings import AUTH_KEY
+
 @csrf_exempt
 def subscribe(request):
     if request.method == "POST":
@@ -65,7 +67,27 @@ def unsubscribe(request):
             return HttpResponse("You have not subscribed yet!", status=409)
 
 
-        ref = db.reference('/subscriptions/' + key)
+        ref = db.reference('/subscriptions/' + entry.keys()[0])
         ref.delete()
 
         return HttpResponse("You have successfully unsubscribed!", status=201)
+
+
+@csrf_exempt
+def get_subscriptions(request):
+    if request.method == 'GET':
+        try:
+            info = json.loads(request.body)
+        except ValueError:
+            return HttpResponse("Invalid JSON", status=400)
+
+        auth_key = info.get("auth_key", "")
+        print(AUTH_KEY)
+        if auth_key != AUTH_KEY:
+            return HttpResponse("Invalid auth key!", status=401)
+
+        ref = db.reference('/subscriptions')
+        subscriptions = list(map(lambda x: x.get('email'),list(dict(ref.get()).values())))
+        return HttpResponse(json.dumps(subscriptions), status=200)
+    else:
+        return HttpResponse("Method not allowed", status=405)

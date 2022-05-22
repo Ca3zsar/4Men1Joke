@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from google.cloud import storage
 from firebase_admin import db
 from datetime import date
+
+import jwt
 from .settings import STORAGE_CREDS
 
 def save_image_to_cloud_storage(image):
@@ -96,6 +98,68 @@ def get_jokes_by_key(request, key):
     else:
         return HttpResponse("Method not allowed", status=405)
 
+@csrf_exempt
+def update_vote(request, joke_id):
+    if request.method == 'PUT':
+        info = json.loads(request.body)
+        vote = info.get("type", "")
+        token = info.get("token", "")
+        if vote == "" or token == "":
+            return HttpResponse("Fields vote and token must exist!", status=400)
+        
+        try:
+            user = jwt.decode(token, 'secret', algorithms=['HS256'])["username"]
+        except jwt.exceptions.InvalidSignatureError:
+            return HttpResponse("Invalid token", status=401)
+        except jwt.exceptions.DecodeError:
+            return HttpResponse("Invalid token", status=401)
+        except jwt.exceptions.ExpiredSignatureError:
+            return HttpResponse("Token expired", status=401)
+
+        react_ref = db.reference('/reacts/')
+        reactions = react_ref.order_by_child('username').equal_to(user).get()
+        found = False
+
+        for key,reaction in reactions.items():
+            if reaction["post-id"] == joke_id:
+                if vote == reaction["reaction"]:
+                    react_ref = db.reference('/reacts/' + key)
+                    react_ref.delete()
+                    found = True
+        
+        if not found:
+            react_ref = db.reference('/reacts/')
+            react_ref.push().set({
+                "username": user,
+                "post-id": joke_id,
+                "reaction": vote,
+                "date" : strftime("%Y-%m-%d")
+            })
+
+
+        # my_json = {
+        #     "username" : user,
+        #     "date": str(datetime.now().strftime("%Y-%m-%d")),
+        #     "post-id" : joke_id,
+        #     "reaction": vote
+        # }
+        
+
+
+        # ref = db.reference('/jokes/' + joke_id)
+        # joke = ref.get()
+        # if vote == "catOk":
+        #     joke["catOk_count"] = joke["catOk_count"] + 1
+        # elif vote == "BASADO":
+        #     joke["BASADO_count"] = joke["BASADO_count"] + 1
+        # elif vote == "questionmark":
+        #     joke["questionmark_count"] = joke["questionmark_count"] + 1
+        # ref.set(joke)
+
+        response_data = {"message": f"Vote successfully updated!"}
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    else:
+        return HttpResponse("Method not allowed", status=405)
 
 @csrf_exempt
 def catOk_countup(request, joke_id):

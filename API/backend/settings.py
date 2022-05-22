@@ -13,6 +13,7 @@ from . import firebase
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STORAGE_CREDS = ''
+AUTH_KEY = ''
 
 # [START gaestd_py_django_secret_config]
 env = environ.Env(DEBUG=(bool, False))
@@ -21,7 +22,9 @@ env_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(env_file):
     # Use a local secret file, if provided
     firebase.initialize_firebase()
-
+    with open("auth-key.txt", "r") as f:
+        AUTH_KEY = f.read()
+        
     env.read_env(env_file)
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     # Pull secrets from Secret Manager
@@ -45,6 +48,11 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
     payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
     STORAGE_CREDS = payload
+
+    auth_key_name = os.environ.get("AUTH_KEY_NAME", "auth-key")
+    name = f"projects/{project_id}/secrets/{auth_key_name}/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    AUTH_KEY = payload
 else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 # [END gaestd_py_django_secret_config]
