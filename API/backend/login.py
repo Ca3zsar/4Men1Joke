@@ -29,10 +29,7 @@ def login(request):
             response_data["reason"] = "name"
             return HttpResponse(json.dumps(response_data), content_type="application/json", status=409)
 
-
         key = list(dict_entry.keys())[0]
-
-        # print(dick[key]['password'])
 
         if dict_entry[key]['password'] != password:
             response_data["message"] = "Credentials are not valid"

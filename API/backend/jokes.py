@@ -31,7 +31,6 @@ def jokes(request):
         info = request.POST
         author = info.get("author", "")
         content = info.get("content", "")
-        print("Content :: " + content)
         image = request.FILES.get("image", "")
         tags = info.get("tags", "")
         
@@ -44,7 +43,6 @@ def jokes(request):
 
         url_image = 'https://storage.googleapis.com/jokes-images/'
         image_url = url_image + image.name if image else ""
-        print(image_url)
         my_json = {
             "author": author,
             "createdAt": str(datetime.now().strftime("%Y-%m-%d %H:%M")),

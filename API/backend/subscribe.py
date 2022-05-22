@@ -62,10 +62,8 @@ def unsubscribe(request):
         dict_entry = dict(entry)
         key = list(dict_entry.keys())[0]
 
-        print(entry)
         if not entry:
             return HttpResponse("You have not subscribed yet!", status=409)
-
 
         ref = db.reference('/subscriptions/' + entry.keys()[0])
         ref.delete()
