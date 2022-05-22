@@ -7,7 +7,9 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 })
 export class FilterComponent implements OnInit {
   author: string = '';
-  isChecked : boolean = false;
+  isChecked: boolean = false;
+  sortingCriteria: any;
+
   tags = [
     "cringe", "meme", "ironic", "short", "pun", "mic drop", "bad joke"
   ];
@@ -23,16 +25,17 @@ export class FilterComponent implements OnInit {
     itemsShowLimit: 3,
   };
 
-  filterOptions : any;
+  filterOptions: any;
 
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
 
   emit() {
     setTimeout(() => {
       this.filterOptions = {
-        'author' : this.author,
-        'tags' : this.selectedItems,
-        'hasImage' : this.isChecked
+        'author': this.author,
+        'tags': this.selectedItems,
+        'hasImage': this.isChecked,
+        "sort": this.sortingCriteria
       }
       console.log(this.filterOptions);
       this.emitter.emit(this.filterOptions);
@@ -45,7 +48,9 @@ export class FilterComponent implements OnInit {
   }
 
   constructor() { }
-    ngOnInit(): void {
+  
+  ngOnInit(): void {
+    this.sortingCriteria = "date asc";
   }
 
 }

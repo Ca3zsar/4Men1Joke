@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { UserService } from 'src/app/_services/user.service';
-
+import {CommentsDialogComponent} from '../comments-dialog/comments-dialog.component';
 
 @Component({
   selector: 'app-joke',
@@ -11,6 +11,7 @@ import { UserService } from 'src/app/_services/user.service';
 
 export class JokeComponent implements OnInit {
   @Input() jsonString?: string;
+  @ViewChild("comments") comments : any;
 
   userService: UserService;
   tokenStorage: TokenStorageService;
@@ -31,7 +32,6 @@ export class JokeComponent implements OnInit {
   BASADO_count = '';
   questionmark_count = '';
   keys?: string[];
-
 
   toggledOn_catOk = false;
   toggledOn_BASSADO = false;

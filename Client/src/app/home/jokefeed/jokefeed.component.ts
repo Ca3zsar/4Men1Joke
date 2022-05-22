@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
+import { JokeComponent } from '../joke/joke.component';
 
 @Component({
   selector: 'app-jokefeed',
@@ -10,7 +11,9 @@ export class JokefeedComponent implements OnInit {
   jokesJsonStringlike = Array<string>();
   jokes = Array<any>();
   filteredJokes = Array<string>();
+  comments: any = [];
 
+  @ViewChildren("jokeComponent") jokesComponents: any;
   @Input() options: any;
   constructor(private userService: UserService) { }
 
@@ -20,7 +23,6 @@ export class JokefeedComponent implements OnInit {
         var jsonResponse = JSON.parse(data);
 
         var keys = Object.keys(jsonResponse.jokes);
-
         for (var i = 0; i < keys.length; i++) {
 
           var outputFormat = {
@@ -47,10 +49,10 @@ export class JokefeedComponent implements OnInit {
     let author = this.options.author;
     let tags = this.options.tags;
     let isChecked = this.options.hasImage;
+    let sortingCriteria = this.options.sort;
 
     let tempJokes = [];
     this.filteredJokes = [];
-
 
     for (var i = 0; i < this.jokes.length; i++) {
       let item = this.jokes[i];
@@ -71,14 +73,60 @@ export class JokefeedComponent implements OnInit {
       }
     }
 
-    if(isChecked){
+    if (isChecked) {
       for (var i = this.filteredJokes.length - 1; i >= 0; i--) {
         let item = tempJokes[i];
-        if(item.joke.photo_url == ''){
+        if (item.joke.photo_url == '') {
           this.filteredJokes.splice(i, 1);
+          tempJokes.splice(i, 1);
         }
       }
     }
 
+    if (sortingCriteria) {
+      this.sortJokes(tempJokes, sortingCriteria); 
+    }
   }
+
+  sortJokes(jokes: Array<any>, sortingCriteria: string) {
+    setTimeout(() => {
+    }, 100)
+    if (sortingCriteria == "date asc") {
+      jokes.sort((a, b) => {
+        return new Date(a.joke.createdAt).getTime() - new Date(b.joke.createdAt).getTime();
+      });
+    } else if (sortingCriteria == "date desc") {
+      jokes.sort((a, b) => {
+        return new Date(b.joke.createdAt).getTime() - new Date(a.joke.createdAt).getTime();
+      });
+    } else if (sortingCriteria == "relevance") {
+      jokes.sort((a, b) => {
+        return  this.computeRelevance(b) - this.computeRelevance(a);
+      });
+    } else if (sortingCriteria == "laughs") {
+      jokes.sort((a, b) => {
+        return this.computeLaughs(b) - this.computeLaughs(a);
+      });
+    }
+    this.filteredJokes = [];
+    jokes.forEach(x => {
+      this.filteredJokes.push(JSON.stringify(x));
+    });
+    
+  }
+
+  computeLaughs(joke: any) {
+    return joke.joke.BASADO_count;
+  }
+
+  computeRelevance(joke: any) {
+    let jokeComp = this.jokesComponents._results.find((x: { id: any; }) => x.id == joke.id);
+    let jokeComments = jokeComp.comments.commentsList;
+    let commentScore = 10;
+    let reactScore = 2;
+    let finalScore = commentScore * jokeComments.length + reactScore * (joke.joke.catOk_count + joke.joke.questionmark_count + joke.joke.BASADO_count);
+
+    return finalScore;
+  }
+
 }
