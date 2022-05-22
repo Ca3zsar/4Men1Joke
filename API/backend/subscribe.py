@@ -82,7 +82,6 @@ def get_subscriptions(request):
             return HttpResponse("Invalid JSON", status=400)
 
         auth_key = info.get("auth_key", "")
-        print(AUTH_KEY)
         if auth_key != AUTH_KEY:
             return HttpResponse("Invalid auth key!", status=401)
 
