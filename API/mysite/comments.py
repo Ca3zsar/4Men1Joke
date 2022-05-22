@@ -46,3 +46,20 @@ def comment(request, joke_id):
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
     else:
         return HttpResponse("Method not allowed", status=405)
+
+
+@csrf_exempt
+def comments_by_username(request, username):
+    if request.method == 'GET':
+        response_data = {}
+        ref = db.reference('/comments')
+        comments = ref.get()
+
+        #iterate through all comments and check if user_id matches
+        for comment in comments:
+            if comments[comment]['username'] == username:
+                response_data[comment] = comments[comment]
+        
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    else:
+        return HttpResponse("Method not allowed", status=405)

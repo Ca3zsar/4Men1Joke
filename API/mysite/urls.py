@@ -37,6 +37,7 @@ urlpatterns = [
 
     path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
 
+    path("users/<str:username>/comments", comments.comments_by_username, name="comments"),
 
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

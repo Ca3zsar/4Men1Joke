@@ -14,6 +14,11 @@ export class UserService {
     return this.http.get(API_URL + '/jokes', { responseType: 'text' });
   }
 
+
+  getJokesByUsername(username: string): Observable<any> {
+    return this.http.get(API_URL + `/username/${username}/jokes`, { responseType: 'text' });
+  }
+
   // ----------------------------------------------------
 
 

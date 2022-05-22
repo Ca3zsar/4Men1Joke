@@ -18,7 +18,7 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getAllJokes().subscribe({
+    this.userService.getJokesByUsername(this.tokenStorage.getUser()).subscribe({
       next: data => {
         var jsonResponse = JSON.parse(data);
 
