@@ -13,7 +13,9 @@ const API_LINK = 'https://man1joke.lm.r.appspot.com/jokes';
 })
 export class PostComponent implements OnInit {
   selectedTags :string[] = [];
-  listOfTags = ["not_funny", "funny", "not_important", "important", "nsfw"];
+  listOfTags = [
+    "cringe", "meme", "ironic", "short", "pun", "mic drop", "bad joke"
+  ];
   selectedOption : any;
   post_form :FormGroup;
   validationError : boolean = false;

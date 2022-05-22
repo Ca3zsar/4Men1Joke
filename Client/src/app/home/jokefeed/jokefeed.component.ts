@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
+import { JokeComponent } from '../joke/joke.component';
 
 @Component({
   selector: 'app-jokefeed',
@@ -7,8 +8,13 @@ import { UserService } from 'src/app/_services/user.service';
   styleUrls: ['./jokefeed.component.css']
 })
 export class JokefeedComponent implements OnInit {
-
   jokesJsonStringlike = Array<string>();
+  jokes = Array<any>();
+  filteredJokes = Array<string>();
+  comments: any = [];
+
+  @ViewChildren("jokeComponent") jokesComponents: any;
+  @Input() options: any;
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -17,7 +23,6 @@ export class JokefeedComponent implements OnInit {
         var jsonResponse = JSON.parse(data);
 
         var keys = Object.keys(jsonResponse.jokes);
-
         for (var i = 0; i < keys.length; i++) {
 
           var outputFormat = {
@@ -26,61 +31,102 @@ export class JokefeedComponent implements OnInit {
             "joke": jsonResponse.jokes[keys[i]]
           }
           this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
+          this.jokes.push(outputFormat);
         }
+        this.filteredJokes = this.jokesJsonStringlike;
       },
       error: err => {
         console.log(JSON.parse(err.error).message)
       }
     });
+  }
 
-    return
+  ngOnChanges() {
+    this.refresh();
+  }
 
-    var mock_up_data = {
-      jokes : [
-        {
-          author : "Andrei Toma",
-          createdAt : "2019-11-12T12:00:00.000Z",
-          content : "Presedintele cand pleaca din tara...tot presedinte e",
-          photo_url : "https://i.imgur.com/qkdpN.jpg",
-          catOk_count : "2222",
-          BASADO_count : "1",
-          questionmark_count : "1",
-          keys : [
-            "dark",
-            "mom",
-            "andrei",
-          ]
-        },
-        {
-          author : "Andrei Toma",
-          createdAt : "2019-11-12T12:00:00.000Z",
-          content : "Presedintele cand pleaca din tara...tot presedinte e",
-          photo_url : "https://upload.wikimedia.org/wikipedia/commons/f/fe/EPP_Summit%3B_Meise%2C_Dec._2013_%2811449226465%29_%28cropped_2%29.jpg",
-          catOk_count : "2",
-          BASADO_count : "1",
-          questionmark_count : "1",
-          keys : [
-            "dark",
-            "mom",
-            "andrei",
-          ]
-        }
-      ]
+  refresh() {
+    let author = this.options.author;
+    let tags = this.options.tags;
+    let isChecked = this.options.hasImage;
+    let sortingCriteria = this.options.sort;
+
+    let tempJokes = [];
+    this.filteredJokes = [];
+
+    for (var i = 0; i < this.jokes.length; i++) {
+      let item = this.jokes[i];
+      if (item.joke.author.toLowerCase().search(author.toLowerCase(),) != -1) {
+        this.filteredJokes.push(this.jokesJsonStringlike[i]);
+        tempJokes.push(this.jokes[i]);
+      }
     }
 
-    var jokesArrayObj = mock_up_data.jokes;
-    this.jokesJsonStringlike = []
-
-    for (var i = 0; i < jokesArrayObj.length; i++) {
-      var outputFormat = {
-        id : i,
-        joke : jokesArrayObj[i]
+    if (tags && tags.length > 0) {
+      for (var i = tempJokes.length - 1; i >= 0; i--) {
+        let item = tempJokes[i];
+        let intersection = item.joke.keys.filter((x: any) => tags.includes(x));
+        if (intersection.length == 0) {
+          this.filteredJokes.splice(i, 1);
+          tempJokes.splice(i, 1);
+        }
       }
-      this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
+    }
+
+    if (isChecked) {
+      for (var i = this.filteredJokes.length - 1; i >= 0; i--) {
+        let item = tempJokes[i];
+        if (item.joke.photo_url == '') {
+          this.filteredJokes.splice(i, 1);
+          tempJokes.splice(i, 1);
+        }
+      }
+    }
+
+    if (sortingCriteria) {
+      this.sortJokes(tempJokes, sortingCriteria); 
     }
   }
-  
 
+  sortJokes(jokes: Array<any>, sortingCriteria: string) {
+    setTimeout(() => {
+    }, 100)
+    if (sortingCriteria == "date asc") {
+      jokes.sort((a, b) => {
+        return new Date(a.joke.createdAt).getTime() - new Date(b.joke.createdAt).getTime();
+      });
+    } else if (sortingCriteria == "date desc") {
+      jokes.sort((a, b) => {
+        return new Date(b.joke.createdAt).getTime() - new Date(a.joke.createdAt).getTime();
+      });
+    } else if (sortingCriteria == "relevance") {
+      jokes.sort((a, b) => {
+        return  this.computeRelevance(b) - this.computeRelevance(a);
+      });
+    } else if (sortingCriteria == "laughs") {
+      jokes.sort((a, b) => {
+        return this.computeLaughs(b) - this.computeLaughs(a);
+      });
+    }
+    this.filteredJokes = [];
+    jokes.forEach(x => {
+      this.filteredJokes.push(JSON.stringify(x));
+    });
+    
+  }
 
+  computeLaughs(joke: any) {
+    return joke.joke.BASADO_count;
+  }
+
+  computeRelevance(joke: any) {
+    let jokeComp = this.jokesComponents._results.find((x: { id: any; }) => x.id == joke.id);
+    let jokeComments = jokeComp.comments.commentsList;
+    let commentScore = 10;
+    let reactScore = 2;
+    let finalScore = commentScore * jokeComments.length + reactScore * (joke.joke.catOk_count + joke.joke.questionmark_count + joke.joke.BASADO_count);
+
+    return finalScore;
+  }
 
 }

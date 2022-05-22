@@ -1,6 +1,7 @@
 <div class="container">
-  <header class="jumbotron">
-    <app-filter></app-filter>
-    <app-jokefeed></app-jokefeed>
+  <header class="jumbotron main-feed">
+    <app-filter (emitter)="send($event)"></app-filter>
+    <hr>
+    <app-jokefeed [options]="options"></app-jokefeed>
   </header>
 </div>

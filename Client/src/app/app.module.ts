@@ -12,13 +12,13 @@ import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatProgressBarModule} from '@angular/material/progress-bar'; 
-
-
+import {MatDividerModule} from '@angular/material/divider'; 
+import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
 import { JokefeedComponent } from './home/jokefeed/jokefeed.component';
 import { JokeComponent } from './home/joke/joke.component';
 import { FilterComponent } from './home/filter/filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import { PostComponent } from './post/post.component';
 import { MatCardModule } from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input'; 
@@ -28,7 +28,7 @@ import { FileUploadComponent } from './post/file-upload/file-upload.component';
 import { ValidateTokenComponent } from './validate-token/validate-token.component';
 import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     MatIconModule,
     MatProgressBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDividerModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    MatCheckboxModule,
+    MatAutocompleteModule
   ],
   providers: [FileUploadComponent],
   bootstrap: [AppComponent]
