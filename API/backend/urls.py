@@ -22,15 +22,6 @@ urlpatterns = [
     path("username/<str:username>/jokes", jokes.get_jokes_by_username, name="jokes"),
     path("key/<str:key>/jokes", jokes.get_jokes_by_key, name="jokes"),
 
-    path("jokes/<str:joke_id>/catOk_countup", jokes.catOk_countup, name="jokes"),
-    path("jokes/<str:joke_id>/catOk_countdown", jokes.catOk_countdown, name="jokes"),
-
-    path("jokes/<str:joke_id>/BASADO_countup", jokes.BASADO_countup, name="jokes"),
-    path("jokes/<str:joke_id>/BASADO_countdown", jokes.BASADO_countdown, name="jokes"),
-
-    path("jokes/<str:joke_id>/questionmark_countup", jokes.questionmark_countup, name="jokes"),
-    path("jokes/<str:joke_id>/questionmark_countdown", jokes.questionmark_countdown, name="jokes"),
-
     path("jokes/<str:joke_id>", jokes.update_vote, name="jokes"),
 
     path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),

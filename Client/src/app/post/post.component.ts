@@ -5,6 +5,8 @@ import { TokenStorageService } from '../_services/token-storage.service';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 
 const API_LINK = 'https://man1joke.lm.r.appspot.com/jokes';
+// const API_LINK = 'http://localhost:8000/jokes';
+
 
 @Component({
   selector: 'app-post',
