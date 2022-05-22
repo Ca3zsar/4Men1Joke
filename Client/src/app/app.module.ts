@@ -29,6 +29,11 @@ import { ValidateTokenComponent } from './validate-token/validate-token.componen
 import { CommentsDialogComponent } from './home/comments-dialog/comments-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { DashboardComponent } from './profile/dashboard/dashboard.component';
+import { PostsComponent } from './profile/posts/posts.component';
+import { CommentsComponent } from './profile/comments/comments.component';
+import { AwardsComponent } from './profile/awards/awards.component';
+import { PreviewComponent } from './profile/comments/preview/preview.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +48,12 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     PostComponent,
     FileUploadComponent,
     ValidateTokenComponent,
-    CommentsDialogComponent
+    CommentsDialogComponent,
+    DashboardComponent,
+    PostsComponent,
+    CommentsComponent,
+    AwardsComponent,
+    PreviewComponent
   ],
   imports: [
     BrowserModule,

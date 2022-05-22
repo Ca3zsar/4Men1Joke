@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const API_URL = 'https://man1joke.lm.r.appspot.com';
-// const API_URL = 'http://localhost:8000';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +12,15 @@ export class UserService {
 
   getAllJokes(): Observable<any> {
     return this.http.get(API_URL + '/jokes', { responseType: 'text' });
+  }
+
+  getJokeById(joke_id: string): Observable<any> {
+    return this.http.get(API_URL + `/jokes/${joke_id}`, { responseType: 'text' });
+  }
+
+
+  getJokesByUsername(username: string): Observable<any> {
+    return this.http.get(API_URL + `/username/${username}/jokes`, { responseType: 'text' });
   }
 
   // ----------------------------------------------------
@@ -34,6 +42,12 @@ export class UserService {
   getCommentsByJokeId(joke_id: string): Observable<any> {
     return this.http.get(API_URL + `/jokes/${joke_id}/comments`, { responseType: 'text' });
   }
+
+  getCommentsByUsername(username: string): Observable<any> {
+    return this.http.get(API_URL + `/users/${username}/comments/jokes`, { responseType: 'text' });
+  }
+
+  // ----------------------------------------------------
 
 
   getPublicContent(): Observable<any> {
