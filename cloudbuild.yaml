@@ -17,5 +17,12 @@ steps:
    - 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA'
    - '--region'
    - 'europe-central2'
+ - name: python
+   entrypoint: pip
+   args: ["install", "-r", "requirements.txt"]
+  dir: ./API
+ - name: "gcr.io/cloud-builders/gcloud"
+   args: ["app", "deploy", "api.yaml"]
+   dir: ./API
 images:
  - 'gcr.io/man1joke/github.com/ca3zsar/4men1joke:$COMMIT_SHA'
