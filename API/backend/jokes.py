@@ -126,6 +126,13 @@ def update_vote(request, joke_id):
                     react_ref = db.reference('/reacts/' + key)
                     react_ref.delete()
                     found = True
+
+                    #decrement vote count from joke
+                    joke_ref = db.reference('/jokes/' + joke_id)
+                    joke_ref.update({
+                        f"{vote}_count": joke_ref.get()[f"{vote}_count"] - 1
+                    })
+                    break
         
         if not found:
             react_ref = db.reference('/reacts/')
@@ -136,25 +143,10 @@ def update_vote(request, joke_id):
                 "date" : strftime("%Y-%m-%d")
             })
 
-
-        # my_json = {
-        #     "username" : user,
-        #     "date": str(datetime.now().strftime("%Y-%m-%d")),
-        #     "post-id" : joke_id,
-        #     "reaction": vote
-        # }
-        
-
-
-        # ref = db.reference('/jokes/' + joke_id)
-        # joke = ref.get()
-        # if vote == "catOk":
-        #     joke["catOk_count"] = joke["catOk_count"] + 1
-        # elif vote == "BASADO":
-        #     joke["BASADO_count"] = joke["BASADO_count"] + 1
-        # elif vote == "questionmark":
-        #     joke["questionmark_count"] = joke["questionmark_count"] + 1
-        # ref.set(joke)
+            joke_ref = db.reference('/jokes/' + joke_id)
+            joke_ref.update({
+                f"{vote}_count": joke_ref.get()[f"{vote}_count"] + 1
+            })
 
         response_data = {"message": f"Vote successfully updated!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
