@@ -11,7 +11,7 @@ from . import codeVerification
 from . import comments
 
 urlpatterns = [
-    path("", include("polls.urls")),
+    # path("", include("polls.urls")),
     path("admin/", admin.site.urls),
     path("register", register.register, name="register"),
     path("login", login.login, name="login"),
@@ -31,7 +31,7 @@ urlpatterns = [
     path("jokes/<str:joke_id>/questionmark_countdown", jokes.questionmark_countdown, name="jokes"),
 
 
-    path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),
+    path("jokes/<str:joke_id>", jokes.handle_joke, name="jokes"),
 
     path("jokes/deleteToxicPosts", jokes.delete_toxic_posts, name="jokes"),
 
@@ -40,7 +40,7 @@ urlpatterns = [
 
 
     path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
-
+    path("users/<str:username>/comments/jokes", comments.comments_by_username, name="comments"),
 
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
