@@ -31,7 +31,7 @@ urlpatterns = [
     path("jokes/<str:joke_id>/questionmark_countdown", jokes.questionmark_countdown, name="jokes"),
 
 
-    path("jokes/<str:joke_id>", jokes.delete_joke, name="jokes"),
+    path("jokes/<str:joke_id>", jokes.handle_joke, name="jokes"),
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 
 

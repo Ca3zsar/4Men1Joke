@@ -31,6 +31,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DashboardComponent } from './profile/dashboard/dashboard.component';
 import { PostsComponent } from './profile/posts/posts.component';
 import { CommentsComponent } from './profile/comments/comments.component';
+import { AwardsComponent } from './profile/awards/awards.component';
+import { PreviewComponent } from './profile/comments/preview/preview.component';
 
 
 @NgModule({
@@ -49,7 +51,9 @@ import { CommentsComponent } from './profile/comments/comments.component';
     CommentsDialogComponent,
     DashboardComponent,
     PostsComponent,
-    CommentsComponent
+    CommentsComponent,
+    AwardsComponent,
+    PreviewComponent
   ],
   imports: [
     BrowserModule,

@@ -192,7 +192,7 @@ def questionmark_countdown(request, joke_id):
 
 
 @csrf_exempt
-def delete_joke(request, joke_id):
+def handle_joke(request, joke_id):
     if request.method == 'DELETE':
         response_data = {}
         ref = db.reference('/jokes/' + joke_id)
@@ -200,6 +200,17 @@ def delete_joke(request, joke_id):
 
         response_data = {"message": f"Joke successfully deleted!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    elif request.method == 'GET':
+        response_data = {}
+        ref = db.reference('/jokes/' + joke_id)
+        joke = ref.get()
+
+        if joke is None:
+            return HttpResponse("Joke not found", status=404)
+
+        response_data["joke"] = joke
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+    
     else:
         return HttpResponse("Method not allowed", status=405)
 
