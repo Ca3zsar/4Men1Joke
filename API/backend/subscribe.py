@@ -76,12 +76,7 @@ def unsubscribe(request):
 @csrf_exempt
 def get_subscriptions(request):
     if request.method == 'GET':
-        try:
-            info = json.loads(request.body)
-        except ValueError:
-            return HttpResponse("Invalid JSON", status=400)
-
-        auth_key = info.get("auth_key", "")
+        auth_key = request.headers.get('auth-token','')
         if auth_key != AUTH_KEY:
             return HttpResponse("Invalid auth key!", status=401)
 
