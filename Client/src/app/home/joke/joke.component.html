@@ -15,7 +15,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <h3 class="card-text">{{content}}</h3>
+                    <h3 class="card-text" style="white-space: pre-line;">{{content}}</h3>
                 </div>
                 <div class="col" *ngIf="photo_url">
                     <img class="img-fluid float-right" style="width: 30vh;" alt="eh" src="{{photo_url}}" >
@@ -28,16 +28,16 @@
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <span class="px-2"> {{catOk_count}} </span>
-                            <img (click)="countUpDown('catOk')" id="catOk_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6137a8e1af28e956864c6cfc/3x" >
+                            <span class="px-2"> {{votes.catOk_count}} </span>
+                            <img (click)="triggerVote('catOk')" id="catOk_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6137a8e1af28e956864c6cfc/3x" >
                         </div>
                         <div class="col">
-                            <span class="px-2"> {{BASADO_count}} </span>
-                            <img (click)="countUpDown('BASADO')" id="BASADO_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/5e9c4ae9ce7cbf62fe153803/3x" >
+                            <span class="px-2"> {{votes.laugh_count}} </span>
+                            <img (click)="triggerVote('laugh')" id="laugh_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/5e9c4ae9ce7cbf62fe153803/3x" >
                         </div>
                         <div class="col">
-                            <span class="px-2"> {{questionmark_count}} </span>
-                            <img (click)="countUpDown('questionmark')" id="questionmark_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/60c8c85cf8b3f62601c3e2c3/3x" >
+                            <span class="px-2"> {{votes.dislike_count}} </span>
+                            <img (click)="triggerVote('dislike')" id="dislike_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/60c8c85cf8b3f62601c3e2c3/3x" >
                         </div>
                         <button type="button" class="btn button-blue" data-toggle="modal"  [attr.data-target]="'#modal' + joke_key">
                             Comments

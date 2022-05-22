@@ -21,22 +21,24 @@ export class JokefeedComponent implements OnInit {
     this.userService.getAllJokes().subscribe({
       next: data => {
         var jsonResponse = JSON.parse(data);
+        if (jsonResponse.jokes) {
+          var keys = Object.keys(jsonResponse.jokes);
+          for (var i = 0; i < keys.length; i++) {
 
-        var keys = Object.keys(jsonResponse.jokes);
-        for (var i = 0; i < keys.length; i++) {
-
-          var outputFormat = {
-            "id": i,
-            "joke_key": keys[i],
-            "joke": jsonResponse.jokes[keys[i]]
+            var outputFormat = {
+              "id": i,
+              "joke_key": keys[i],
+              "joke": jsonResponse.jokes[keys[i]]
+            }
+            this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
+            this.jokes.push(outputFormat);
           }
-          this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
-          this.jokes.push(outputFormat);
+          this.filteredJokes = this.jokesJsonStringlike;
         }
-        this.filteredJokes = this.jokesJsonStringlike;
       },
       error: err => {
-        console.log(JSON.parse(err.error).message)
+        // console.log(JSON.parse(err.error).message)
+        console.log(err);
       }
     });
   }
@@ -84,7 +86,7 @@ export class JokefeedComponent implements OnInit {
     }
 
     if (sortingCriteria) {
-      this.sortJokes(tempJokes, sortingCriteria); 
+      this.sortJokes(tempJokes, sortingCriteria);
     }
   }
 
@@ -101,7 +103,7 @@ export class JokefeedComponent implements OnInit {
       });
     } else if (sortingCriteria == "relevance") {
       jokes.sort((a, b) => {
-        return  this.computeRelevance(b) - this.computeRelevance(a);
+        return this.computeRelevance(b) - this.computeRelevance(a);
       });
     } else if (sortingCriteria == "laughs") {
       jokes.sort((a, b) => {
@@ -112,11 +114,12 @@ export class JokefeedComponent implements OnInit {
     jokes.forEach(x => {
       this.filteredJokes.push(JSON.stringify(x));
     });
-    
+    console.log(jokes);
+
   }
 
   computeLaughs(joke: any) {
-    return joke.joke.BASADO_count;
+    return joke.joke.laugh_count;
   }
 
   computeRelevance(joke: any) {
@@ -124,7 +127,7 @@ export class JokefeedComponent implements OnInit {
     let jokeComments = jokeComp.comments.commentsList;
     let commentScore = 10;
     let reactScore = 2;
-    let finalScore = commentScore * jokeComments.length + reactScore * (joke.joke.catOk_count + joke.joke.questionmark_count + joke.joke.BASADO_count);
+    let finalScore = commentScore * jokeComments.length + reactScore * (joke.joke.catOk_count + joke.joke.dislike_count + joke.joke.laugh_count);
 
     return finalScore;
   }
