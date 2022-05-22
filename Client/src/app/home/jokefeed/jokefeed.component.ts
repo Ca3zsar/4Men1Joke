@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 
 @Component({
@@ -7,8 +7,11 @@ import { UserService } from 'src/app/_services/user.service';
   styleUrls: ['./jokefeed.component.css']
 })
 export class JokefeedComponent implements OnInit {
-
   jokesJsonStringlike = Array<string>();
+  jokes = Array<any>();
+  filteredJokes = Array<string>();
+
+  @Input() keyword: string | undefined;
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -26,61 +29,28 @@ export class JokefeedComponent implements OnInit {
             "joke": jsonResponse.jokes[keys[i]]
           }
           this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
+          this.jokes.push(outputFormat);
         }
+        this.filteredJokes = this.jokesJsonStringlike;
       },
       error: err => {
         console.log(JSON.parse(err.error).message)
       }
     });
+  }
 
-    return
+  ngOnChanges() {
+    this.refresh();
+  }
 
-    var mock_up_data = {
-      jokes : [
-        {
-          author : "Andrei Toma",
-          createdAt : "2019-11-12T12:00:00.000Z",
-          content : "Presedintele cand pleaca din tara...tot presedinte e",
-          photo_url : "https://i.imgur.com/qkdpN.jpg",
-          catOk_count : "2222",
-          BASADO_count : "1",
-          questionmark_count : "1",
-          keys : [
-            "dark",
-            "mom",
-            "andrei",
-          ]
-        },
-        {
-          author : "Andrei Toma",
-          createdAt : "2019-11-12T12:00:00.000Z",
-          content : "Presedintele cand pleaca din tara...tot presedinte e",
-          photo_url : "https://upload.wikimedia.org/wikipedia/commons/f/fe/EPP_Summit%3B_Meise%2C_Dec._2013_%2811449226465%29_%28cropped_2%29.jpg",
-          catOk_count : "2",
-          BASADO_count : "1",
-          questionmark_count : "1",
-          keys : [
-            "dark",
-            "mom",
-            "andrei",
-          ]
-        }
-      ]
-    }
-
-    var jokesArrayObj = mock_up_data.jokes;
-    this.jokesJsonStringlike = []
-
-    for (var i = 0; i < jokesArrayObj.length; i++) {
-      var outputFormat = {
-        id : i,
-        joke : jokesArrayObj[i]
+  refresh() {
+    console.log(this.keyword);
+    this.filteredJokes = [];
+    for (var i = 0; i < this.jokes.length; i++) {
+      let item = this.jokes[i];
+      if (item.joke.author.search(this.keyword) != -1) {
+        this.filteredJokes.push(this.jokesJsonStringlike[i]);
       }
-      this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
     }
   }
-  
-
-
-
 }

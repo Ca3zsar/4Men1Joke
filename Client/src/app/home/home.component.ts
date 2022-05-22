@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +8,13 @@ import { UserService } from '../_services/user.service';
 export class HomeComponent implements OnInit {
   content?: string;
   jokes_feed?: string;
+  keyword = "";
 
-  constructor(private userService: UserService) { }
+  send(keyword : any){
+    this.keyword = keyword;
+  }
+
+  constructor() { }
 
   ngOnInit(): void {
 

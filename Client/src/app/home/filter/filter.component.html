@@ -4,13 +4,13 @@
       <p class="filter-text">Filter by:</p>
       <div class="row filters-row">
         <ng-multiselect-dropdown [settings]="dropdownSettings" [placeholder]="'Select tags'" [data]="tags"
-          [(ngModel)]="selectedItems">
+          [(ngModel)]="selectedItems" (onSelect)="emit()" (onSelectAll)="emit()" (onDeSelect)="emit()" (onDeSelectAll)="emit()">
         </ng-multiselect-dropdown>
-        <input formControlName="author" class="form-control author-input" id="authorInput" placeholder="Enter author">
+        <input class="form-control author-input" id="authorInput" placeholder="Enter author" (change)="checkKey($event)" >
         <mat-checkbox class="has-image">Has image?</mat-checkbox>
       </div>
     </div>
-    <div class="column">
+    <div class="column" >
       <p class="filter-text">Sort by</p>
       <select id="sorter" class="form-select-color form-select-sm sorter" aria-label=".form-select-sm example">
         <option value="date" default selected>Date</option>
