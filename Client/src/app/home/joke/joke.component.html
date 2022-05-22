@@ -1,6 +1,6 @@
-<div class="container mb-3">
+<div class="shadow container mb-5 joke-div">
     <div class="card dropdown" style="width: 100%;">
-        <div class="card-header">
+        <div class="card-header header-div">
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
@@ -39,13 +39,13 @@
                             <span class="px-2"> {{questionmark_count}} </span>
                             <img (click)="countUpDown('questionmark')" id="questionmark_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/60c8c85cf8b3f62601c3e2c3/3x" >
                         </div>
-                        <button type="button" class="btn btn-primary" data-toggle="modal"  [attr.data-target]="'#modal' + joke_key">
+                        <button type="button" class="btn button-blue" data-toggle="modal"  [attr.data-target]="'#modal' + joke_key">
                             Comments
                         </button>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="d-flex float-right flex-row bd-highlight mb-3" *ngFor="let key of keys">
+                    <div class="d-flex float-right flex-row bd-highlight mb-3  tags-column" *ngFor="let key of keys">
                         <div class="p-2 bd-highlight">#{{key}}</div>
                     </div>
                 </div>
