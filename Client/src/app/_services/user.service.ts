@@ -59,6 +59,12 @@ export class UserService {
     return this.http.get(API_URL + `/jokes/${joke_id}/comments`, { responseType: 'text' });
   }
 
+  getCommentsByUsername(username: string): Observable<any> {
+    return this.http.get(API_URL + `/users/${username}/comments`, { responseType: 'text' });
+  }
+
+  // ----------------------------------------------------
+
 
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + 'all', { responseType: 'text' });
