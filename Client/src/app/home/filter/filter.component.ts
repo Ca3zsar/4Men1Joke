@@ -1,45 +1,51 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
-  author : string = '';
-
+  author: string = '';
+  isChecked : boolean = false;
   tags = [
-    "funny", "very funny", "serious", "cringe"
+    "cringe", "meme", "ironic", "short", "pun", "mic drop", "bad joke"
   ];
 
-  selectedItems = [
+  selectedItems = [];
 
-  ];
   dropdownSettings: IDropdownSettings = {
     singleSelection: false,
     idField: 'item_id',
     textField: 'item_text',
     selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
+    unSelectAllText: 'Deselect All',
     itemsShowLimit: 3,
   };
 
-  @Output() emitter: EventEmitter<string>
-    = new EventEmitter<string>();
+  filterOptions : any;
+
+  @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
 
   emit() {
-    this.emitter.emit(this.author);
+    setTimeout(() => {
+      this.filterOptions = {
+        'author' : this.author,
+        'tags' : this.selectedItems,
+        'hasImage' : this.isChecked
+      }
+      console.log(this.filterOptions);
+      this.emitter.emit(this.filterOptions);
+    }, 100);
   }
 
-  checkKey(event : any){
+  checkText(event: any) {
     this.author = event.target.value;
     this.emit();
   }
 
   constructor() { }
-
-  ngOnInit(): void {
+    ngOnInit(): void {
   }
 
 }

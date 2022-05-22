@@ -6,8 +6,8 @@
         <ng-multiselect-dropdown [settings]="dropdownSettings" [placeholder]="'Select tags'" [data]="tags"
           [(ngModel)]="selectedItems" (onSelect)="emit()" (onSelectAll)="emit()" (onDeSelect)="emit()" (onDeSelectAll)="emit()">
         </ng-multiselect-dropdown>
-        <input class="form-control author-input" id="authorInput" placeholder="Enter author" (change)="checkKey($event)" >
-        <mat-checkbox class="has-image">Has image?</mat-checkbox>
+        <input class="form-control author-input" id="authorInput" placeholder="Enter author" (change)="checkText($event)" >
+        <mat-checkbox [(ngModel)]="isChecked" class="has-image" (change)="emit()">Has image?</mat-checkbox>
       </div>
     </div>
     <div class="column" >

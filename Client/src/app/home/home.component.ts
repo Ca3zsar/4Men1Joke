@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   content?: string;
   jokes_feed?: string;
-  keyword = "";
+  options = {};
 
-  send(keyword : any){
-    this.keyword = keyword;
+  send(options : any){
+    this.options = options;
   }
 
   constructor() { }

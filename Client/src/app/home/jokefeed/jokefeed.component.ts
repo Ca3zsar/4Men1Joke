@@ -11,7 +11,7 @@ export class JokefeedComponent implements OnInit {
   jokes = Array<any>();
   filteredJokes = Array<string>();
 
-  @Input() keyword: string | undefined;
+  @Input() options: any;
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -44,13 +44,41 @@ export class JokefeedComponent implements OnInit {
   }
 
   refresh() {
-    console.log(this.keyword);
+    let author = this.options.author;
+    let tags = this.options.tags;
+    let isChecked = this.options.hasImage;
+
+    let tempJokes = [];
     this.filteredJokes = [];
+
+
     for (var i = 0; i < this.jokes.length; i++) {
       let item = this.jokes[i];
-      if (item.joke.author.search(this.keyword) != -1) {
+      if (item.joke.author.toLowerCase().search(author.toLowerCase(),) != -1) {
         this.filteredJokes.push(this.jokesJsonStringlike[i]);
+        tempJokes.push(this.jokes[i]);
       }
     }
+
+    if (tags && tags.length > 0) {
+      for (var i = tempJokes.length - 1; i >= 0; i--) {
+        let item = tempJokes[i];
+        let intersection = item.joke.keys.filter((x: any) => tags.includes(x));
+        if (intersection.length == 0) {
+          this.filteredJokes.splice(i, 1);
+          tempJokes.splice(i, 1);
+        }
+      }
+    }
+
+    if(isChecked){
+      for (var i = this.filteredJokes.length - 1; i >= 0; i--) {
+        let item = tempJokes[i];
+        if(item.joke.photo_url == ''){
+          this.filteredJokes.splice(i, 1);
+        }
+      }
+    }
+
   }
 }
