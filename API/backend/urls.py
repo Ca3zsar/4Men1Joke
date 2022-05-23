@@ -11,6 +11,7 @@ from . import codeVerification
 from . import comments
 from . import reacts
 from . import subscribe
+from . import stats
 
 urlpatterns = [
     path("", include("jokes.urls")),
@@ -24,7 +25,7 @@ urlpatterns = [
     path("username/<str:username>/jokes", jokes.get_jokes_by_username, name="jokes"),
     path("key/<str:key>/jokes", jokes.get_jokes_by_key, name="jokes"),
 
-    path("jokes/<str:joke_id>", jokes.update_vote, name="jokes"),
+    # path("jokes/<str:joke_id>", jokes.update_vote, name="jokes"),
 
     path("jokes/<str:joke_id>", jokes.handle_joke, name="jokes"),
 
@@ -38,7 +39,7 @@ urlpatterns = [
     path("reacts/<str:username>", reacts.get_reacts, name="reacts"),
     path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
     path("users/<str:username>/comments/jokes", comments.comments_by_username, name="comments"),
-
+    path("stats", stats.most_liked, name="stats")
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]
