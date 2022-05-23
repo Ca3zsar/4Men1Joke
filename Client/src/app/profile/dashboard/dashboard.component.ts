@@ -23,18 +23,16 @@ export class DashboardComponent implements OnInit {
 
    handleSubscribe() {
     this.alreadySubscribed = !this.alreadySubscribed;
-    console.log(this.alreadySubscribed);
+    
       if (this.alreadySubscribed) {
         this.userService.subscribeUser(this.user_token!).subscribe(
           data => {
-            console.log(data);
           }
         );
       }
       else {
         this.userService.unsubscribeUser(this.user_token!).subscribe(
           data => {
-            console.log(data);
           }
         );
       }
@@ -52,7 +50,6 @@ export class DashboardComponent implements OnInit {
         {
           this.alreadySubscribed = false;
         }
-        console.log(this.alreadySubscribed);
       }
     );
   }
