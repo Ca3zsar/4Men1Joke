@@ -29,12 +29,12 @@ export class LoginComponent implements OnInit {
   }
 
   setUser(token:string): void{
-    this.jwtService.verifyToken("cacat").subscribe({
+    this.jwtService.verifyToken(token).subscribe({
       next: (data) => {
-        console.log(data);
+        this.tokenStorage.saveUser(data.username);
       },
       error: (err) => {
-        console.log(err);
+        this.tokenStorage.signOut();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
@@ -7,13 +7,11 @@ import { TokenStorageService } from 'src/app/_services/token-storage.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  username: string;
-  email: string;
+  @Input() username?: string;
+  @Input() email?: string;
 
 
   constructor(private token: TokenStorageService) {
-    this.username = this.token.getUser();
-    this.email = 'gigel@gmail.com'
    }
 
   ngOnInit(): void {

@@ -55,7 +55,6 @@ export class JokeComponent implements OnInit {
       this.votes.laugh_count = parseInt(jokeObj.joke.laugh_count);
       this.votes.dislike_count = parseInt(jokeObj.joke.dislike_count);
       this.keys = jokeObj.joke.keys;
-      console.log(jokeObj.triggers)
       this.toggledOn_catOk = jokeObj.triggers.indexOf("catOk") != -1;
       this.toggledOn_laugh = jokeObj.triggers.indexOf("laugh") != -1;
       this.toggledOn_dislike = jokeObj.triggers.indexOf("dislike") != -1;

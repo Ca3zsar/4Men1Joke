@@ -141,8 +141,6 @@ export class JokefeedComponent implements OnInit {
     jokes.forEach(x => {
       this.filteredJokes.push(JSON.stringify(x));
     });
-    console.log(jokes);
-
   }
 
   computeLaughs(joke: any) {

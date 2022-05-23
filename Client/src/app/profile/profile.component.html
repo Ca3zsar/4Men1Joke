@@ -1,4 +1,4 @@
-<div class="container" *ngIf="currentUser; else loggedOut">
+<div class="container" *ngIf="isLoggedIn">
   <header class="jumbotron main-feed">
     <div class="container">
       <div class="row">
@@ -11,7 +11,7 @@
                 </div> 
         </div>
         <div class="col-md-9">
-          <app-dashboard *ngIf="component_flag == 1"></app-dashboard>
+          <app-dashboard [email]="email" [username]="username" *ngIf="component_flag == 1"></app-dashboard>
           <app-posts *ngIf="component_flag == 2"></app-posts>
           <app-comments *ngIf="component_flag == 3"></app-comments>
           <app-awards *ngIf="component_flag == 4"></app-awards>

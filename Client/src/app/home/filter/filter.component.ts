@@ -37,7 +37,6 @@ export class FilterComponent implements OnInit {
         'hasImage': this.isChecked,
         "sort": this.sortingCriteria
       }
-      console.log(this.filterOptions);
       this.emitter.emit(this.filterOptions);
     }, 100);
   }

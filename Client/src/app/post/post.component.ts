@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { JWTService } from '../_services/jwt_check.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 
@@ -21,10 +22,11 @@ export class PostComponent implements OnInit {
   selectedOption : any;
   post_form :FormGroup;
   validationError : boolean = false;
+  isLoggedIn = false;
 
   @ViewChild('imageUploader') imageUploader : FileUploadComponent | undefined; 
 
-  constructor(private http: HttpClient,fb: FormBuilder, public tokenStorage: TokenStorageService) { 
+  constructor(private jwt_service : JWTService, private http: HttpClient,fb: FormBuilder, public tokenStorage: TokenStorageService) { 
     this.post_form = fb.group({
       "title": [null, Validators.compose([Validators.required])],
       "content": [null, Validators.compose([Validators.required])]
@@ -62,9 +64,6 @@ export class PostComponent implements OnInit {
     formData.append('tags',this.selectedTags.toString());
     formData.append('image',this.imageUploader!.file);
     formData.append('author', this.tokenStorage.getUser());
-    for (var key of formData.entries()) {
-			console.log(key[0] + ', ' + key[1])
-		}
     const upload$ = this.http.post(API_LINK,formData,
       ).subscribe(
       {
@@ -88,6 +87,19 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedOption = "Choose a tag";
+
+    if (this.tokenStorage.getToken()) {
+      this.jwt_service.verifyToken(this.tokenStorage.getToken()!).subscribe(
+        (data) => {
+          this.isLoggedIn = true;
+        }, (err) => {
+          this.tokenStorage.signOut()
+          window.location.href = '/home';
+        }
+      )
+    }else{
+      window.location.href = '/home';
+    }
   }
 
 }

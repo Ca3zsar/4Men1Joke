@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JWTService } from '../_services/jwt_check.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
@@ -13,15 +14,31 @@ export class ProfileComponent implements OnInit {
   email: string;
 
   component_flag = 1;
+  isLoggedIn = false;
 
 
-  constructor(private token: TokenStorageService) {
-    this.username = this.token.getUser();
-    this.email = 'gigel@gmail.com'
+  constructor(private tokenStorage: TokenStorageService, private jwt_service:JWTService) {
+    this.username = '';
+    this.email = '';
+    if (this.tokenStorage.getToken()) {
+      this.jwt_service.verifyToken(this.tokenStorage.getToken()!).subscribe(
+        (data) => {
+          this.isLoggedIn = true;
+          this.tokenStorage.saveUser(data.username);
+          this.currentUser = data.username;
+          this.username = data.username;
+          this.email = data.email;
+        }, (err) => {
+          this.tokenStorage.signOut()
+          window.location.href = '/home';
+        }
+      )
+    }else{
+      window.location.href = '/home';
+    }
   }
 
   ngOnInit(): void {
-    this.currentUser = this.token.getUser();
   }
 
 

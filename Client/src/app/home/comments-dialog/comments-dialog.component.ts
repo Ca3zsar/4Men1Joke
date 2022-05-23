@@ -29,8 +29,6 @@ export class CommentsDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Component generated');
-
     if(this.joke_id) {
       this.userService.getCommentsByJokeId(this.joke_id).subscribe(
         data => {
@@ -63,7 +61,6 @@ export class CommentsDialogComponent implements OnInit {
       
       if(isLoggedIn && this.joke_id) {
         // send comment to server
-        console.log("Sending comment to server");
         this.userService.postComment(this.joke_id, this.tokenStorageService.getUser(), comment).subscribe();
       
         // add comment to list for rerendering

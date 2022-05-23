@@ -1,4 +1,4 @@
-<div class="post-body">
+<div *ngIf="isLoggedIn" class="post-body">
     <!-- center the div-->
     <div class="card w-75">
         <div class="card-header">
@@ -17,14 +17,18 @@
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="text-tab">
-                    <div [formGroup]="post_form"  class="form-group">
+                    <div [formGroup]="post_form" class="form-group">
                         <label for="titleInput">Title of the post</label>
                         <input formControlName="title" class="form-control" id="titleInput" placeholder="Enter title">
-                        <span class="text-danger" *ngIf="post_form.controls['title'].hasError('required') && (post_form.controls['title'].dirty || post_form.controls['title'].touched)">This field is required</span>
+                        <span class="text-danger"
+                            *ngIf="post_form.controls['title'].hasError('required') && (post_form.controls['title'].dirty || post_form.controls['title'].touched)">This
+                            field is required</span>
                         <br>
                         <label for="postContent">Enter the text of the joke</label>
                         <textarea formControlName="content" class="form-control" id="postContent" rows="3"></textarea>
-                        <span class="text-danger" *ngIf="post_form.controls['content'].hasError('required') && (post_form.controls['content'].dirty || post_form.controls['content'].touched)">This field is required</span>
+                        <span class="text-danger"
+                            *ngIf="post_form.controls['content'].hasError('required') && (post_form.controls['content'].dirty || post_form.controls['content'].touched)">This
+                            field is required</span>
                     </div>
                     <div class="row tags-row">
                         Tags :
@@ -40,7 +44,8 @@
                             </select>
                         </div>
                     </div>
-                    <div *ngIf="validationError && selectedTags.length == 0" class="row tags-row"><span style="color:red">Select at least one tag!</span></div>
+                    <div *ngIf="validationError && selectedTags.length == 0" class="row tags-row"><span
+                            style="color:red">Select at least one tag!</span></div>
                 </div>
 
                 <div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">

@@ -27,23 +27,7 @@ export class FileUploadComponent {
             reader.onload = () => {
               this.imgSrc = reader.result as string; // base64 Image src
             };
-            console.log(this.file);
             formData.append("thumbnail", this.file);
-
-            // const upload$ = this.http.post("/api/thumbnail-upload", formData, {
-            //     reportProgress: true,
-            //     observe: 'events'
-            // })
-            // .pipe(
-            //     finalize(() => this.reset())
-            // );
-          
-            // this.uploadSub = upload$.subscribe(event => {
-            //   if (event.type == HttpEventType.UploadProgress) {
-            //     event.total = event.total || file.size;
-            //     this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-            //   }
-            // })
         }
     }
 
