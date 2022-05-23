@@ -1,9 +1,12 @@
 from datetime import datetime, timezone, timedelta
 import json
 import jwt
+import bcrypt
+
 from django.views.decorators.csrf import csrf_exempt
 from .models import Account
 from django.http import HttpResponse
+
 
 from firebase_admin import db
 
@@ -31,9 +34,11 @@ def login(request):
 
         key = list(dict_entry.keys())[0]
 
-        if dict_entry[key]['password'] != password:
+        # print(password.encode('utf-8'), dict_entry[key]['password'].encode('utf-8'), bcrypt.checkpw(password.encode('utf-8'), dict_entry[key]['password'].encode('utf-8')), sep='\n')
+
+        if not bcrypt.checkpw(password.encode(), dict_entry[key]['password'].encode()):
             response_data["message"] = "Credentials are not valid"
-            response_data["reason"] = "name"
+            response_data["reason"] = "password"
             return HttpResponse(json.dumps(response_data), content_type="application/json", status=401)
 
         if dict_entry[key]['isVerified'] != 1:
@@ -43,8 +48,11 @@ def login(request):
         email = dict_entry[key]['email']
 
         expiry_date = datetime.now(timezone(timedelta(hours=+9))) + timedelta(days=1) 
-        jwt_token = jwt.encode({'username': username, 'email' : email, "exp":expiry_date}, 'secret', algorithm='HS256')
+        jwt_token = jwt.encode({'username': username, 'email' : email, "exp" : expiry_date}, 'secret', algorithm='HS256')
+        
         response_data["token"] = jwt_token.decode('utf-8')
+        # response_data["token"] = jwt_token
+
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)     
     else:
         return HttpResponse("Method not allowed", status=405)
