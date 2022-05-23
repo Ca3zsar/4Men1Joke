@@ -97,7 +97,6 @@ def get_jokes_by_key(request, key):
     else:
         return HttpResponse("Method not allowed", status=405)
 
-@csrf_exempt
 def update_vote(request, joke_id):
     if request.method == 'PUT':
         info = json.loads(request.body)
@@ -149,22 +148,7 @@ def update_vote(request, joke_id):
 
         response_data = {"message": f"Vote successfully updated!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
-    else:
-        return HttpResponse("Method not allowed", status=405)
-
-
-@csrf_exempt
-def delete_joke(request, joke_id):
-    if request.method == 'DELETE':
-        response_data = {}
-        ref = db.reference('/jokes/' + joke_id)
-        ref.delete()
-
-        response_data = {"message": f"Joke successfully deleted!"}
-        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
-    else:
-        return HttpResponse("Method not allowed", status=405)
-
+    
 
 @csrf_exempt
 def delete_toxic_posts(request):
@@ -202,7 +186,8 @@ def handle_joke(request, joke_id):
 
         response_data["joke"] = joke
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
-
+    elif request.method == 'PUT':
+        return update_vote(request, joke_id)
     else:
         return HttpResponse("Method not allowed", status=405)
 
