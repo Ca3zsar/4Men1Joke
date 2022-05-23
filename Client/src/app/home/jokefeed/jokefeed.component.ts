@@ -20,7 +20,7 @@ export class JokefeedComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   async setJokes() {
-    return this.userService.getAllJokes().subscribe({
+    setTimeout(() => {this.userService.getAllJokes().subscribe({
       next: data => {
         var jsonResponse = JSON.parse(data);
         if (jsonResponse.jokes) {
@@ -42,7 +42,7 @@ export class JokefeedComponent implements OnInit {
       error: err => {
         console.log(err);
       }
-    });
+    });},200);
   }
 
   async setReacts() {
