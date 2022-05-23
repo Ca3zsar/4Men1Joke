@@ -142,7 +142,7 @@ def update_vote(request, joke_id):
                 "reaction": vote,
                 "date" : strftime("%Y-%m-%d")
             })
-
+            
             joke_ref = db.reference('/jokes/' + joke_id)
             joke_ref.update({
                 f"{vote}_count": joke_ref.get()[f"{vote}_count"] + 1

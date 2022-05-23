@@ -73,3 +73,20 @@
     height: auto;
     padding:6px 30px 6px 12px;
 }
+
+@media (max-width: 768px) {
+    .filter-area {
+        font-size:12px !important;
+    }
+
+    ::ng-deep .author-input{
+        font-size:12px;
+    }
+
+    .big-row .column{
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
