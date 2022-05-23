@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { TokenStorageService } from './token-storage.service';
 
 const API_URL = 'https://man1joke.lm.r.appspot.com';
 
@@ -8,7 +9,7 @@ const API_URL = 'https://man1joke.lm.r.appspot.com';
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public storage : TokenStorageService) { }
 
   getAllJokes(): Observable<any> {
     return this.http.get(API_URL + '/jokes', { responseType: 'text' });
@@ -18,6 +19,10 @@ export class UserService {
     return this.http.get(API_URL + `/jokes/${joke_id}`, { responseType: 'text' });
   }
 
+  getReactsOfUser(): Observable<any>{
+    let username = this.storage.getUser();
+    return this.http.get(API_URL + `/reacts/${username}`, { responseType: 'text' });
+  }
 
   getJokesByUsername(username: string): Observable<any> {
     return this.http.get(API_URL + `/username/${username}/jokes`, { responseType: 'text' });

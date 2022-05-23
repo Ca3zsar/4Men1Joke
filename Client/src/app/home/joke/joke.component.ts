@@ -10,6 +10,7 @@ import { UserService } from 'src/app/_services/user.service';
 
 export class JokeComponent implements OnInit {
   @Input() jsonString?: string;
+  @Input() triggers : any;
   @ViewChild("comments") comments : any;
 
   userService: UserService;
@@ -54,11 +55,22 @@ export class JokeComponent implements OnInit {
       this.votes.laugh_count = parseInt(jokeObj.joke.laugh_count);
       this.votes.dislike_count = parseInt(jokeObj.joke.dislike_count);
       this.keys = jokeObj.joke.keys;
+      this.toggledOn_catOk = jokeObj.triggers.indexOf("catOk") != -1;
+      this.toggledOn_laugh = jokeObj.triggers.indexOf("laugh") != -1;
+      this.toggledOn_dislike = jokeObj.triggers.indexOf("dislike") != -1;
     }
+  }
+
+  ngAfterViewInit() {
+    console.log(this.toggledOn_catOk + " " + this.toggledOn_laugh + " " + this.toggledOn_dislike);
+    this.changeButtonState("catOk",this.toggledOn_catOk);
+      this.changeButtonState("laugh", this.toggledOn_laugh);
+      this.changeButtonState("dislike", this.toggledOn_dislike);
   }
 
   changeButtonState(reaction: string, toggledOn: boolean) {
     if(toggledOn) {
+      console.log(reaction);
       document.getElementById(reaction + `_${this.joke_key}`)?.classList.add("border", "border-info", "rounded-pill", "mr-2", "ml-2");
     }
     else {

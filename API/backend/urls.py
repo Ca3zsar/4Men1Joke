@@ -9,6 +9,7 @@ from . import jokes
 from . import jwt_checker
 from . import codeVerification
 from . import comments
+from . import reacts
 from . import subscribe
 
 urlpatterns = [
@@ -34,7 +35,7 @@ urlpatterns = [
     path('subscriptions', subscribe.get_subscriptions, name="subscriptions"),
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 
-
+    path("reacts/<str:username>", reacts.get_reacts, name="reacts"),
     path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
     path("users/<str:username>/comments/jokes", comments.comments_by_username, name="comments"),
 

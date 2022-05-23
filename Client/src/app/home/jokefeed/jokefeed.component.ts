@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { concat, Observable } from 'rxjs';
 import { UserService } from 'src/app/_services/user.service';
 import { JokeComponent } from '../joke/joke.component';
 
@@ -12,13 +13,14 @@ export class JokefeedComponent implements OnInit {
   jokes = Array<any>();
   filteredJokes = Array<string>();
   comments: any = [];
+  reacts : any = [];
 
   @ViewChildren("jokeComponent") jokesComponents: any;
   @Input() options: any;
   constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
-    this.userService.getAllJokes().subscribe({
+  async setJokes() {
+    return this.userService.getAllJokes().subscribe({
       next: data => {
         var jsonResponse = JSON.parse(data);
         if (jsonResponse.jokes) {
@@ -28,7 +30,8 @@ export class JokefeedComponent implements OnInit {
             var outputFormat = {
               "id": i,
               "joke_key": keys[i],
-              "joke": jsonResponse.jokes[keys[i]]
+              "joke": jsonResponse.jokes[keys[i]],
+              "triggers" : this.reacts.filter((x: any) => x.joke_key == keys[i]).map((x: any) => x.react)
             }
             this.jokesJsonStringlike.push(JSON.stringify(outputFormat));
             this.jokes.push(outputFormat);
@@ -37,10 +40,34 @@ export class JokefeedComponent implements OnInit {
         }
       },
       error: err => {
-        // console.log(JSON.parse(err.error).message)
         console.log(err);
       }
     });
+  }
+
+  async setReacts() {
+    return this.userService.getReactsOfUser().subscribe({
+      next: data => {
+        var jsonResponse = JSON.parse(data);
+        if (jsonResponse.reacts) {
+          var keys = Object.keys(jsonResponse.reacts);
+          for (var i = 0; i < keys.length; i++) {
+            var outputFormat = {
+              "id": i,
+              "joke_key": jsonResponse.reacts[keys[i]]["post-id"],
+              "react": jsonResponse.reacts[keys[i]]["reaction"]
+            }
+            this.reacts.push(outputFormat);
+          }
+        }
+      }
+
+    });
+  }
+
+  ngOnInit(): void {
+    concat(this.setReacts(),this.setJokes()).subscribe(
+    );
   }
 
   ngOnChanges() {
