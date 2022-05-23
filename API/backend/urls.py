@@ -31,9 +31,11 @@ urlpatterns = [
 
     path("jokes/deleteToxicPosts", jokes.delete_toxic_posts, name="jokes"),
 
+    # Route for subscribing to a joke
     path("subscribe", subscribe.subscribe, name="subscribe"),
     path('unsubscribe', subscribe.unsubscribe, name="unsuscribe"),
     path('subscriptions', subscribe.get_subscriptions, name="subscriptions"),
+    path("check_subscription/<str:email>", subscribe.check_subscription, name="check_subscription"),
     path("utils/jwt-check", jwt_checker.check_jwt, name="jwt-check"),
 
     path("reacts/<str:username>", reacts.get_reacts, name="reacts"),
