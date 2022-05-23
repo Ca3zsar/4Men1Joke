@@ -33,24 +33,24 @@ def event(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
 
 @csrf_exempt
-def endEvent(request,event_id):
+def endEvent(request):
     if request.method == 'PUT':
 
         ref = db.reference('/events')
         events = ref.get()
         for event in events:
-            if event == event_id:
-                if events[event]['onGoing'] == 0:
-                    response_data = {"message": f"This event has already ended!"}
-                    return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
-
+            if events[event]['onGoing'] == 1:
                 ref = db.reference('/events/'+event)
                 ref.update({'onGoing': 0})
                 response_data = {"message": f"Event successfully ended!"}
                 return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
 
-        response_data = {"message": f"Event does not exist!"}
+        response_data = {"message": f"There is not active event!"}
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
+
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
 
 @csrf_exempt
 def getEventById(request,event_id):
