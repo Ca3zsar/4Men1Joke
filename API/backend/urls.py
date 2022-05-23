@@ -12,6 +12,7 @@ from . import comments
 from . import reacts
 from . import subscribe
 from . import stats
+from . import events
 
 urlpatterns = [
     path("", include("jokes.urls")),
@@ -39,7 +40,10 @@ urlpatterns = [
     path("reacts/<str:username>", reacts.get_reacts, name="reacts"),
     path("jokes/<str:joke_id>/comments", comments.comment, name="comments"),
     path("users/<str:username>/comments/jokes", comments.comments_by_username, name="comments"),
-    path("stats", stats.most_liked, name="stats")
+    path("stats", stats.most_liked, name="stats"),
 
+    path("events", events.event, name="events"),
+    path("events/<str:event_id>", events.getEventById, name="events"),
+    path("events/<str:event_id>/end", events.endEvent, name="events")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]
