@@ -14,9 +14,6 @@ export class CommentsComponent implements OnInit {
   tokenStorageService : TokenStorageService;
 
 
-
-
-
   commentsList: Array<any>;
 
   constructor(userService : UserService, tokenStorageService: TokenStorageService, private http: HttpClient) {

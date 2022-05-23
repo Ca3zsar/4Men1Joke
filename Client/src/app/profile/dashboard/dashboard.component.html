@@ -21,7 +21,17 @@
                           <label for="username" class="col-form-label"><b>{{email}}</b></label>
                         </div>
                       </div>
-                    </form>
+                      <div class="form-group row">
+                        <label for="subscribe" class="col-4 col-form-label">Subscribe:</label> 
+                        <div class="col-8">
+                          <div class="form-check">
+                            <input class="form-check-input" (change)="handleSubscribe()" type="checkbox" value="" id="flexCheckDefault" [attr.checked] = "alreadySubscribed ? 1 : null" >
+                            <label class="form-check-label" for="flexCheckDefault">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                  </form>
             </div>
         </div>
     </div>

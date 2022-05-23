@@ -61,11 +61,12 @@ def unsubscribe(request):
         entry = ref.order_by_child('email').equal_to(email).get()
         dict_entry = dict(entry)
         key = list(dict_entry.keys())[0]
+        print(key)
 
         if not entry:
             return HttpResponse("You have not subscribed yet!", status=409)
 
-        ref = db.reference('/subscriptions/' + entry.keys()[0])
+        ref = db.reference('/subscriptions/' + key)
         ref.delete()
 
         return HttpResponse("You have successfully unsubscribed!", status=201)
@@ -83,3 +84,21 @@ def get_subscriptions(request):
         return HttpResponse(json.dumps(subscriptions), status=200)
     else:
         return HttpResponse("Method not allowed", status=405)
+
+
+@csrf_exempt
+def check_subscription(request, email):
+    if request.method == 'GET':
+        # auth_key = request.headers.get('auth-token','')
+        # if auth_key != AUTH_KEY:
+        #     return HttpResponse("Invalid auth key!", status=401)
+        response_data = {}
+        ref = db.reference('/subscriptions')
+        if len(ref.order_by_child('email').equal_to(email).get().keys()) > 0:
+            response_data['subscribed'] = True
+        else:
+            response_data['subscribed'] = False
+        return HttpResponse(json.dumps(response_data), status=200)
+
+
+
