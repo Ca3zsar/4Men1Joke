@@ -60,8 +60,8 @@ def register(request):
         expiry_date = datetime.now(timezone(timedelta(hours=+9))) + timedelta(days=1) 
         jwt_token = jwt.encode({'username': username, 'email' : email, "exp":expiry_date}, 'secret', algorithm='HS256')
 
-        response_data["token"] = jwt_token.decode('utf-8')
-        # response_data["token"] = jwt_token
+        response_data["token"] = jwt_token
+
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
     else:
         return HttpResponse("Method not allowed", status=405)
