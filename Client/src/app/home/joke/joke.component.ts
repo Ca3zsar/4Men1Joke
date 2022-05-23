@@ -29,7 +29,7 @@ export class JokeComponent implements OnInit {
 
   id = '';
   joke_key = '';
-
+  title = '';
   author = '';
   createdAt = '';
   content = '';
@@ -54,6 +54,7 @@ export class JokeComponent implements OnInit {
       this.votes.catOk_count = parseInt(jokeObj.joke.catOk_count);
       this.votes.laugh_count = parseInt(jokeObj.joke.laugh_count);
       this.votes.dislike_count = parseInt(jokeObj.joke.dislike_count);
+      this.title = jokeObj.joke.title;
       this.keys = jokeObj.joke.keys;
       this.toggledOn_catOk = jokeObj.triggers.indexOf("catOk") != -1;
       this.toggledOn_laugh = jokeObj.triggers.indexOf("laugh") != -1;

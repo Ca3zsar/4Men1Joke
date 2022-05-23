@@ -32,6 +32,7 @@ def jokes(request):
         content = info.get("content", "")
         image = request.FILES.get("image", "")
         tags = info.get("tags", "")
+        title = info.get("title", "")
         
         if author == "" or content == "" or tags == "":
             return HttpResponse("Fields author, content and keys must exist!", status=400)
@@ -50,7 +51,8 @@ def jokes(request):
             "catOk_count": 0,
             "laugh_count": 0,
             "dislike_count": 0,
-            "keys": tags.split(",")
+            "keys": tags.split(","),
+            "title":title
         }
 
         ref = db.reference('/jokes')

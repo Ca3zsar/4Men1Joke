@@ -33,6 +33,7 @@ export class PreviewComponent implements OnInit {
   photo_url = '';
   keys?: string[];
 
+  title = '';
   toggledOn_catOk = false;
   toggledOn_laugh = false;
   toggledOn_dislike = false;
@@ -46,6 +47,7 @@ export class PreviewComponent implements OnInit {
       this.createdAt = this.jsonString.joke["createdAt"];
       this.content = this.jsonString.joke["content"];
       this.photo_url = this.jsonString.joke["photo_url"];
+      this.title = this.jsonString.joke["title"];
 
       this.votes.catOk_count = this.jsonString.joke["catOk_count"];
       this.votes.laugh_count = this.jsonString.joke["laugh_count"];
