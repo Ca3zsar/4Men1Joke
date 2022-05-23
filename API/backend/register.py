@@ -2,6 +2,7 @@ from datetime import datetime, timezone, timedelta
 import json
 
 import jwt
+import bcrypt
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
@@ -31,9 +32,15 @@ def register(request):
 
         verification_code = utils.generateVerificationCode()
 
+
+        salt = bcrypt.gensalt(14)
+        hashed = bcrypt.hashpw(password.encode(), salt)
+
+        # print(password, hashed, bcrypt.checkpw(password.encode(), hashed), sep='\n')
+
         jsonForRegister = {
             "username": username,
-            "password": password,
+            "password": hashed.decode(),
             "email": email,
             "isVerified": 0
         }
@@ -54,6 +61,7 @@ def register(request):
         jwt_token = jwt.encode({'username': username, 'email' : email, "exp":expiry_date}, 'secret', algorithm='HS256')
 
         response_data["token"] = jwt_token.decode('utf-8')
+        # response_data["token"] = jwt_token
         return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
     else:
         return HttpResponse("Method not allowed", status=405)
