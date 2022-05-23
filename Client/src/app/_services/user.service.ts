@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 
-// const API_URL = 'https://man1joke.lm.r.appspot.com';
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://man1joke.lm.r.appspot.com';
+// const API_URL = 'http://localhost:8000';
 
 @Injectable({
   providedIn: 'root'

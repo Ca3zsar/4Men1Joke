@@ -32,25 +32,7 @@
             
                     <div class="card-footer text-muted">
                         <div class="row  gx-5">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <span class="px-2"> {{votes.catOk_count}} </span>
-                                        <img (click)="triggerVote('catOk')" id="catOk_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/6137a8e1af28e956864c6cfc/3x" >
-                                    </div>
-                                    <div class="col">
-                                        <span class="px-2"> {{votes.laugh_count}} </span>
-                                        <img (click)="triggerVote('laugh')" id="laugh_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/5e9c4ae9ce7cbf62fe153803/3x" >
-                                    </div>
-                                    <div class="col">
-                                        <span class="px-2"> {{votes.dislike_count}} </span>
-                                        <img (click)="triggerVote('dislike')" id="dislike_{{joke_key}}" class="img-fluid" style="width: 5vh;height: 5vh;" alt="eh" src="https://cdn.betterttv.net/emote/60c8c85cf8b3f62601c3e2c3/3x" >
-                                    </div>
-                                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal"  [attr.data-target]="'#modal' + joke_key">
-                                        Comments
-                                    </button> -->
-                                </div>
-                            </div>
+                            
                             <div class="col">
                                 <div class="d-flex float-right flex-row bd-highlight mb-3" *ngFor="let key of keys">
                                     <div class="p-2 bd-highlight">#{{key}}</div>
