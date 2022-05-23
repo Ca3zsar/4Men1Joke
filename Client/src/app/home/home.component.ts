@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   content?: string;
   jokes_feed?: string;
-  options = {};
+  options = {"sort" :"date asc"};
 
   send(options : any){
     this.options = options;

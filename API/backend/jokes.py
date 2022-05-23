@@ -2,12 +2,11 @@ import json
 import logging
 from time import strftime
 
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from google.cloud import storage
 from firebase_admin import db
-from datetime import date
 
 import jwt
 from .settings import STORAGE_CREDS
@@ -45,7 +44,7 @@ def jokes(request):
         image_url = url_image + image.name if image else ""
         my_json = {
             "author": author,
-            "createdAt": str(datetime.now().strftime("%Y-%m-%d %H:%M")),
+            "createdAt": str((datetime.utcnow() + timedelta(hours=3)).strftime("%Y-%m-%d %H:%M")),
             "content": content,
             "photo_url": image_url,
             "catOk_count": 0,

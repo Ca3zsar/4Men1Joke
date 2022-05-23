@@ -68,6 +68,7 @@ export class JokefeedComponent implements OnInit {
   ngOnInit(): void {
     concat(this.setReacts(),this.setJokes()).subscribe(
     );
+    this.refresh();
   }
 
   ngOnChanges() {

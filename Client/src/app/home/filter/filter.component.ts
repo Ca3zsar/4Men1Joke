@@ -50,6 +50,7 @@ export class FilterComponent implements OnInit {
   
   ngOnInit(): void {
     this.sortingCriteria = "date asc";
+    this.emit();
   }
 
 }
