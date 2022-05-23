@@ -22,7 +22,7 @@ def event(request):
             "topic": topic,
             "entries": [],
             "onGoing": 1,
-            "date": strftime("%Y-%m-%d")
+            "date": strftime("%Y-%m-%d %H:%M")
         }
         ref.push().set(jsonForEvents)
         entry = ref.order_by_child('name').equal_to(name).get()
@@ -43,10 +43,10 @@ def endEvent(request):
                 ref = db.reference('/events/'+event)
                 ref.update({'onGoing': 0})
                 response_data = {"message": f"Event successfully ended!"}
-                return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
+                return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
         response_data = {"message": f"There is not active event!"}
-        return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=400)
 
     else:
         return HttpResponse("Method not allowed", status=405)
@@ -61,13 +61,61 @@ def getEventById(request,event_id):
 
         if events == None:
             response_data = {"message": "This event does not exists"}
-            return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
+            return HttpResponse(json.dumps(response_data), content_type="application/json", status=404)
 
         for event in events:
             if event == event_id:
                 response_data = events[event]
-                return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
+                return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
 
 
         response_data = {"message" : "This event does not exists"}
-        return HttpResponse(json.dumps(response_data), content_type="application/json", status=201)
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=404)
+
+
+@csrf_exempt
+def getActiveEvents(request):
+    if request.method == 'GET':
+
+        ref = db.reference('/events')
+        events = ref.get()
+
+        for event in events:
+            if events[event]['onGoing'] == 1:
+                response_data = {"events": events[event]}
+                return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+
+        response_data = {"message" : "No active events at the moment", "events": []}
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=404)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+@csrf_exempt
+def postEntry(request):
+    if request.method == 'POST':
+        info = json.loads(request.body)
+        name = info.get("name", "")
+        comment = info.get("comment", "")
+
+        if name == "" or comment == '':
+            response_data = {"message": "Name and comment are required"}
+            return HttpResponse(json.dumps(response_data), content_type="application/json", status=400)
+
+        ref = db.reference('/events')
+        event = ref.order_by_child("name").equal_to(name).get()
+        ref_entry = db.reference('/events/'+list(event.keys())[0])
+        print(ref_entry.get())
+        ref_entry.update(
+            {
+                "entries" : ref_entry.get().get("entries",[]) + [comment]
+            }
+        )
+
+        if event == None:
+            response_data = {"message": "This event does not exists"}
+            return HttpResponse(json.dumps(response_data), content_type="application/json", status=400)
+        
+        response_data = {"message":"entry successfully posted"}
+        return HttpResponse(json.dumps(response_data), content_type="application/json", status=200)
+
+

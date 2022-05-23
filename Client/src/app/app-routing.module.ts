@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 
 import { PostComponent } from './post/post.component';
 import { ValidateTokenComponent } from './validate-token/validate-token.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'create-post', component: PostComponent},
   { path: 'validate', component: ValidateTokenComponent},
+  { path: 'event', component: EventsComponent},
 
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];

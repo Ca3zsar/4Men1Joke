@@ -46,6 +46,8 @@ urlpatterns = [
 
     path("events", events.event, name="events"),
     path("events/<str:event_id>", events.getEventById, name="events"),
-    path("events-end", events.endEvent, name="events")
+    path("active-events", events.getActiveEvents, name="events"),
+    path("events-end", events.endEvent, name="events"),
+    path("events-entry", events.postEntry, name="events"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]

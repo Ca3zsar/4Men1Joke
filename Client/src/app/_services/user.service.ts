@@ -44,6 +44,12 @@ export class UserService {
     return this.http.post(API_URL + `/jokes/${joke_id}/comments`, { username, comment }, { responseType: 'text' });
   }
 
+  postEntry(event_name: string, username: string, comment: string): Observable<any> {
+    return this.http.post(API_URL + `/events-entry`, { "name":event_name, "comment":{
+      "author":username,
+      "text":comment
+    } }, { responseType: 'text' });
+  }
 
   getCommentsByJokeId(joke_id: string): Observable<any> {
     return this.http.get(API_URL + `/jokes/${joke_id}/comments`, { responseType: 'text' });

@@ -34,6 +34,7 @@ import { PostsComponent } from './profile/posts/posts.component';
 import { CommentsComponent } from './profile/comments/comments.component';
 import { AwardsComponent } from './profile/awards/awards.component';
 import { PreviewComponent } from './profile/comments/preview/preview.component';
+import { EventsComponent } from './events/events.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { PreviewComponent } from './profile/comments/preview/preview.component';
     PostsComponent,
     CommentsComponent,
     AwardsComponent,
-    PreviewComponent
+    PreviewComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,
